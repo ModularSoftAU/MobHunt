@@ -1,20 +1,21 @@
 package com.modularenigma.MobHunt.commands;
 
-import com.modularenigma.MobHunt.MobHuntMain;
-import com.modularenigma.MobHunt.MobHuntChatController;
+import com.modularenigma.MobHunt.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class mobs implements CommandExecutor {
-    private final MobHuntMain plugin;
-    private final MobHuntChatController eggChatController;
+import java.util.List;
 
-    public mobs(MobHuntMain plugin, MobHuntChatController eggChatController) {
+public class mobleaderboard implements CommandExecutor {
+    private final MobHuntMain plugin;
+    private final HunterController hunterController;
+
+    public mobleaderboard(MobHuntMain plugin, HunterController hunterController) {
         this.plugin = plugin;
-        this.eggChatController = eggChatController;
+        this.hunterController = hunterController;
     }
 
     @Override
@@ -24,8 +25,9 @@ public class mobs implements CommandExecutor {
             return true;
         }
 
-        eggChatController.playersOwnEggCountResponse(player);
+        List<MobHuntQuery.MobHunter> bestHunters =
+                MobHuntQuery.getBestHunters(plugin, player, plugin.config().getLeaderboardShowPlayers());
+        hunterController.showLeaderBoardResponse(player, bestHunters);
         return true;
     }
-
 }

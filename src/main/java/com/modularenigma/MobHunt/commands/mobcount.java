@@ -1,21 +1,20 @@
 package com.modularenigma.MobHunt.commands;
 
-import com.modularenigma.MobHunt.*;
+import com.modularenigma.MobHunt.MobHuntMain;
+import com.modularenigma.MobHunt.HunterController;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
-public class leaderboard implements CommandExecutor {
+public class mobcount implements CommandExecutor {
     private final MobHuntMain plugin;
-    private final MobHuntChatController eggChatController;
+    private final HunterController hunterController;
 
-    public leaderboard(MobHuntMain plugin, MobHuntChatController eggChatController) {
+    public mobcount(MobHuntMain plugin, HunterController hunterController) {
         this.plugin = plugin;
-        this.eggChatController = eggChatController;
+        this.hunterController = hunterController;
     }
 
     @Override
@@ -25,8 +24,9 @@ public class leaderboard implements CommandExecutor {
             return true;
         }
 
-        List<MobHuntQuery.EggHunter> bestHunters = MobHuntQuery.getBestHunters(plugin, player, 5);
-        eggChatController.showLeaderBoardResponse(player, bestHunters);
+        // TODO: Decide on how this is going to work.
+        //       Show it show the stats of every mob killed?
         return true;
     }
+
 }

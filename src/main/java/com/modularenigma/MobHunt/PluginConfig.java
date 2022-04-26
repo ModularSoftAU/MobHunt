@@ -1,6 +1,6 @@
 package com.modularenigma.MobHunt;
 
-import com.modularenigma.MobHunt.helpers.MobHuntMilestone;
+import com.modularenigma.MobHunt.helpers.CollectionMilestone;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -10,90 +10,103 @@ import java.util.*;
 
 public class PluginConfig {
     private final MobHuntMain plugin;
-    private final FileConfiguration config;
 
-    @Getter private final String databaseHost;
-    @Getter private final int databasePort;
-    @Getter private final String databaseName;
-    @Getter private final String databaseUsername;
-    @Getter private final String databasePassword;
+    @Getter private String databaseHost;
+    @Getter private int databasePort;
+    @Getter private String databaseName;
+    @Getter private String databaseUsername;
+    @Getter private String databasePassword;
 
-    @Getter private final boolean milestoneMessageFeatureEnabled;
+    @Getter private String adminRole;
 
-    @Getter private final Sound minorCollectionSound;
-    @Getter private final Sound majorCollectionSound;
+    @Getter private boolean featureOnEnableConsoleMessageEnabled;
+    @Getter private boolean featureOnDisableConsoleMessageEnabled;
+    @Getter private boolean featureOnNewHunterConsoleMessageEnabled;
+    @Getter private boolean featureMilestoneMessageEnabled;
 
-    @Getter private final Map<Integer, MobHuntMilestone> eggMilestones;
+    @Getter private Sound soundMinorCollectionMilestone;
+    @Getter private Sound soundMajorCollectionMilestone;
 
-    @Getter private final String langDatabaseConnectionError;
-    @Getter private final String langDatabaseConnectionSuccess;
-    @Getter private final String langNotAPlayer;
-    @Getter private final String langInsufficientPermissions;
-    @Getter private final String langCommandIncomplete;
-    @Getter private final String langEggFound;
-    @Getter private final String langFirstEggFound;
-    @Getter private final String langLastEggFound;
-    @Getter private final String langEggAlreadyFound;
-    @Getter private final String langEggCount;
-    @Getter private final String langEggCollectionMilestoneReached;
+    @Getter private Map<Integer, CollectionMilestone> collectionMilestones;
+    @Getter private int leaderboardShowPlayers;
 
-    @Getter private final String langLeaderboardNoEggs;
-    @Getter private final String langLeaderboardHeader;
-    @Getter private final String langLeaderboardFirstColour;
-    @Getter private final String langLeaderboardSecondColour;
-    @Getter private final String langLeaderboardThirdColour;
-    @Getter private final String langLeaderboardFormat;
+    @Getter private String langDatabaseConnectionError;
+    @Getter private String langOnMobClear;
+    @Getter private String langNotAPlayer;
+    @Getter private String langInsufficientPermissions;
+    @Getter private List<String> langNewHunter;
+    @Getter private String langMobKilled;
+    @Getter private String langMobKilledCapReached;
+
+    @Getter private String langCollectionMilestoneReached;
+
+    @Getter private String langLeaderboardHeader;
+    @Getter private String langLeaderboardNoMobsKilled;
+    @Getter private String langLeaderboardFirstColor;
+    @Getter private String langLeaderboardSecondColor;
+    @Getter private String langLeaderboardThirdColor;
+    @Getter private String langLeaderboardOtherColor;
+    @Getter private String langLeaderboardFormat;
+    @Getter private String langScoreboardTitle;
+    @Getter private List<String> langScoreboardContent;
 
     public PluginConfig(MobHuntMain plugin) {
         this.plugin = plugin;
-        this.config = plugin.getConfig();
+        reloadConfig();
+    }
 
-        databaseHost = config.getString("DATABASE.HOST");
-        databasePort = config.getInt("DATABASE.PORT");
-        databaseName = config.getString("DATABASE.DATABASE");
-        databaseUsername = config.getString("DATABASE.USERNAME");
-        databasePassword = config.getString("DATABASE.PASSWORD");
+    public void reloadConfig() {
+        plugin.reloadConfig();
+        FileConfiguration config = plugin.getConfig();
 
-        milestoneMessageFeatureEnabled = config.getBoolean("FEATURE.MILESTONEMESSAGE");
+        databaseHost = config.getString("Database.Host");
+        databasePort = config.getInt("Database.Port");
+        databaseName = config.getString("Database.Name");
+        databaseUsername = config.getString("Database.Username");
+        databasePassword = config.getString("Database.Password");
 
-        minorCollectionSound = Sound.valueOf(config.getString("SOUND.MINORCOLLECTIONMILESTONE"));
-        majorCollectionSound = Sound.valueOf(config.getString("SOUND.MAJORCOLLECTIONMILESTONE"));
+        adminRole = config.getString("AdminRole");
 
-        eggMilestones = new HashMap<>();
-        for (Integer minor : config.getIntegerList("MILESTONES.MINOR"))
-            eggMilestones.put(minor, new MobHuntMilestone(minor, false));
-        for (Integer minor : config.getIntegerList("MILESTONES.MAJOR"))
-            eggMilestones.put(minor, new MobHuntMilestone(minor, true));
+        featureOnEnableConsoleMessageEnabled = config.getBoolean("Features.OnEnabledConsoleMessage");
+        featureOnDisableConsoleMessageEnabled = config.getBoolean("Features.OnDisabledConsoleMessage");
+        featureOnNewHunterConsoleMessageEnabled = config.getBoolean("Features.OnNewHunterConsoleMessage");
+        featureMilestoneMessageEnabled = config.getBoolean("Features.MilestoneMessages");
 
-        langDatabaseConnectionError =       ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.DATABASE.CONNECTIONERROR")));
-        langDatabaseConnectionSuccess =     ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.DATABASE.CONNECTIONSUCCESS")));
-        langNotAPlayer =                    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.COMMAND.NOTAPLAYER")));
-        langInsufficientPermissions =       ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.COMMAND.INSUFFICENTPERMISSIONS")));
-        langCommandIncomplete =             ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.COMMAND.COMMANDINCOMPLETE")));
-        langEggFound =                      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.EGG.EGGFOUND")));
-        langFirstEggFound =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.EGG.FIRSTEGGFOUND")));
-        langLastEggFound =                  ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.EGG.LASTEGGFOUND")));
-        langEggAlreadyFound =               ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.EGG.EGGALREADYFOUND")));
-        langEggCount =                      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.EGG.EGGCOUNT")));
-        langEggCollectionMilestoneReached = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.EGG.EGGCOLLECTIONMILESTONEREACHED")));
+        soundMinorCollectionMilestone = Sound.valueOf(config.getString("Sounds.MinorCollectionMilestone"));
+        soundMajorCollectionMilestone = Sound.valueOf(config.getString("Sounds.MajorCollectionMilestone"));
 
-        langLeaderboardNoEggs =             ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.LEADERBOARD.NOEGGS")));
-        langLeaderboardHeader =             ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.LEADERBOARD.HEADER")));
-        langLeaderboardFirstColour =        ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.LEADERBOARD.FIRSTCOLOUR")));
-        langLeaderboardSecondColour =       ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.LEADERBOARD.SECONDCOLOUR")));
-        langLeaderboardThirdColour =        ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.LEADERBOARD.THIRDCOLOUR")));
-        langLeaderboardFormat =             ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("LANG.LEADERBOARD.FORMAT")));
+        collectionMilestones = new HashMap<>();
+        for (Integer minor : config.getIntegerList("Milestones.Messages.Minor"))
+            collectionMilestones.put(minor, new CollectionMilestone(minor, false));
+        for (Integer major : config.getIntegerList("Milestones.Messages.Major"))
+            collectionMilestones.put(major, new CollectionMilestone(major, true));
+
+        leaderboardShowPlayers = config.getInt("Leaderboard.ShowPlayers");
+
+        langDatabaseConnectionError =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Database.ConnectionError")));
+        langOnMobClear =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.OnMobClear")));
+        langNotAPlayer =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.NotAPlayer")));
+        langInsufficientPermissions =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.InsufficientPermissions")));
+        langNewHunter = new ArrayList<>();
+        for (String s : config.getStringList("Lang.Hunt.NewHunter"))
+            langNewHunter.add(ChatColor.translateAlternateColorCodes('&', s));
+        langMobKilled =                  ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.Kill")));
+        langMobKilledCapReached =        ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.CapReached")));
+        langCollectionMilestoneReached = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.CollectionMilestoneReached")));
+        langLeaderboardHeader =          ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.Header")));
+        langLeaderboardNoMobsKilled =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.NoHeadsFound")));
+        langLeaderboardFirstColor =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.FirstColor")));
+        langLeaderboardSecondColor =     ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.SecondColor")));
+        langLeaderboardThirdColor =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.ThirdColor")));
+        langLeaderboardOtherColor =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.OtherColor")));
+        langLeaderboardFormat =          ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.Format")));
+        langScoreboardTitle =            ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.Title")));
+        langScoreboardContent = new ArrayList<>();
+        for (String s : config.getStringList("Lang.Scoreboard.Content"))
+            langScoreboardContent.add(ChatColor.translateAlternateColorCodes('&', s));
     }
 
     public void save() {
         plugin.saveConfig();
-    }
-
-    public void setTotalEggs(int totalEggs) {
-        config.set("EGG.EGGTOTAL", totalEggs);
-    }
-
-    public int getTotalEggs() {
-        return config.getInt("EGG.EGGTOTAL");
     }
 }

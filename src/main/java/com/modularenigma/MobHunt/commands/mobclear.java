@@ -1,7 +1,7 @@
 package com.modularenigma.MobHunt.commands;
 
 import com.modularenigma.MobHunt.MobHuntMain;
-import com.modularenigma.MobHunt.MobHuntScoreboardController;
+import com.modularenigma.MobHunt.ScoreboardController;
 import com.modularenigma.MobHunt.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,14 +9,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class clearmobs implements CommandExecutor {
+public class mobclear implements CommandExecutor {
     private final MobHuntMain plugin;
-    private final MobHuntChatController eggChatController;
-    private final MobHuntScoreboardController scoreboardController;
+    private final HunterController hunterController;
+    private final ScoreboardController scoreboardController;
 
-    public clearmobs(MobHuntMain plugin, MobHuntChatController eggChatController, MobHuntScoreboardController scoreboardController) {
+    public mobclear(MobHuntMain plugin, HunterController hunterController, ScoreboardController scoreboardController) {
         this.plugin = plugin;
-        this.eggChatController = eggChatController;
+        this.hunterController = hunterController;
         this.scoreboardController = scoreboardController;
     }
 
@@ -27,16 +27,13 @@ public class clearmobs implements CommandExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("easteregghunt.clearegg") || !sender.isOp()) {
+        if (!sender.hasPermission(plugin.config().getAdminRole()) || !sender.isOp()) {
             sender.sendMessage(plugin.config().getLangInsufficientPermissions());
             return true;
         }
 
-        if (!MobHuntQuery.clearEggs(plugin, player))
-            return true;
-
-        eggChatController.playerClearedTheirEggsResponse(player);
-        scoreboardController.reloadScoreboard(player, MobHuntQuery.foundEggsCount(plugin, player));
+        // TODO: Clear the points from the player
+        // TODO: Give an appropriate response to the player.
         return true;
     }
 }

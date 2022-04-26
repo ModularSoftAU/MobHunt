@@ -2,74 +2,71 @@ package com.modularenigma.MobHunt;
 
 import com.modularenigma.MobHunt.helpers.DefaultFontInfo;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class MobHuntChatController {
+public class HunterController {
     private final MobHuntMain plugin;
 
-    public MobHuntChatController(MobHuntMain plugin) {
+    public HunterController(MobHuntMain plugin) {
         this.plugin = plugin;
     }
 
-    public void eggMilestoneReachedEvent(Player player, boolean isMajorSound, int eggs) {
-        if (!plugin.config().isMilestoneMessageFeatureEnabled())
+    public void collectionMilestoneReachedResponse(Player player, boolean isMajorSound, int points) {
+        if (!plugin.config().isFeatureMilestoneMessageEnabled())
             return;
 
-        Sound majorSound = plugin.config().getMajorCollectionSound();
-        Sound minorSound = plugin.config().getMinorCollectionSound();
+        // TODO: Congratulate the player on reaching a milestone. On major milestones
+        //       notify other players as well. Revise and test this.
+        Sound majorSound = plugin.config().getSoundMajorCollectionMilestone();
+        Sound minorSound = plugin.config().getSoundMinorCollectionMilestone();
 
         if (isMajorSound)
             player.playSound(player.getLocation(), majorSound, 1, 1);
         else
             player.playSound(player.getLocation(), minorSound, 1, 1);
 
-        // Congratulate the player on their first egg but don't tell everyone
-        if (eggs == 1) {
-            player.sendMessage(plugin.config().getLangFirstEggFound()
-                    .replace("%PLAYER%", player.getName()));
-            return;
-        }
-
         // Tell other players about the milestone
-        String broadcastMessage;
-        if (eggs == plugin.config().getTotalEggs()) {
-            broadcastMessage = plugin.config().getLangLastEggFound();
-        } else {
-            broadcastMessage = plugin.config().getLangEggCollectionMilestoneReached();
-        }
-        broadcastMessage = broadcastMessage
-                .replace("%PLAYER%", player.getName())
-                .replace("%NUMBEROFEGGS%", String.valueOf(eggs));
+        String broadcastMessage = plugin.config().getLangCollectionMilestoneReached()
+                .replace("%Player%", player.getName())
+                .replace("%Points%", "" + points);
 
-        World world = player.getWorld();
-        for (Player otherPlayers : Bukkit.getOnlinePlayers()) {
+        // TODO: Consider adding a local notification for a player killing their first
+        //       mob. Revise and test this. Other players should be able to hear the
+        //       milestone. If not, then this needs to change AND the PlayerHeadHunt
+        //       plugin code.
+        player.getWorld().playSound(player.getLocation(), minorSound, 1, 1);
+        for (Player otherPlayers : Bukkit.getOnlinePlayers())
             otherPlayers.sendMessage(broadcastMessage);
-            world.playSound(player.getLocation(), minorSound, 1, 1);
-        }
     }
 
+    /**
+     * When a new player joins.
+     * @param player The player who joined.
+     */
     public void newPlayerJoinsTheHunt(Player player) {
-        player.sendMessage(ChatColor.BOLD + "" + ChatColor.GREEN + "Welcome Egg Hunter.");
-        player.sendMessage("Welcome Egg Hunter to the Easter Egg Hunt. Explore our Hub and the fields outside and collect as many eggs as you can.");
-        player.sendMessage("Right Click to collect an Easter Egg and you will hear a ding when it is collected.");
-        player.sendMessage(" ");
-        player.sendMessage(ChatColor.YELLOW + "Happy Easter and happy hunting.\nFrom Crafting For Christ");
+        for (String s : plugin.config().getLangNewHunter())
+            player.sendMessage(s.replace("%Player%", player.getName()));
     }
 
-    public void playersOwnEggCountResponse(Player player) {
-        // Players wants to see their own egg count
-        player.sendMessage(plugin.config().getLangEggCount()
-                .replace("%FOUNDEGGS%", "" + MobHuntQuery.foundEggsCount(plugin, player))
-                .replace("%NUMBEROFEGGS%", "" + plugin.config().getTotalEggs()));
+    /**
+     * When a player wants to see a breakdown of their points.
+     * @param player The player to respond to.
+     */
+    public void playersOwnPointsResponse(Player player) {
+        // TODO: Need to introduce a format of showing these statistics to the player
+        //       Potentially need a different to command to show a breakdown and/or
+        //       only the points. Needs further testing and design.
+//        player.sendMessage(plugin.config().getLangPoints()
+//                .replace("%FOUNDEGGS%", "" + MobHuntQuery.foundEggsCount(plugin, player))
+//                .replace("%NUMBEROFEGGS%", "" + plugin.config().getTotalEggs()));
     }
 
-    public void playerClearedTheirEggsResponse(Player player) {
-        player.sendMessage("All eggs have been cleared.");
+    public void playerClearedTheirPointsResponse(Player player) {
+        player.sendMessage(plugin.config().getLangOnMobClear()
+                .replace("%Player%", player.getName()));
     }
 
     /**
@@ -144,7 +141,7 @@ public class MobHuntChatController {
         player.sendMessage(getPixelPadding(toCompensate) + message);
     }
 
-    public void showLeaderBoardResponse(Player player, List<MobHuntQuery.EggHunter> bestHunters) {
+    public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters) {
         int centrePixel = minecraftMessageLengthInPixels(
                 plugin.config().getLangLeaderboardHeader()) / 2;
 
@@ -154,30 +151,30 @@ public class MobHuntChatController {
 
         if (bestHunters.size() == 0) {
             // If there are no hunters we should probably tell the player
-            sendMessageInCentre(player, plugin.config().getLangLeaderboardNoEggs(), centrePixel);
+            sendMessageInCentre(player, plugin.config().getLangLeaderboardNoMobsKilled(), centrePixel);
         } else {
             for (int i = 0; i < bestHunters.size(); i++) {
-                MobHuntQuery.EggHunter hunter = bestHunters.get(i);
+                MobHuntQuery.MobHunter hunter = bestHunters.get(i);
 
-                // We probably shouldn't list players who have no eggs.
-                // Once we find a player with 0 eggs then the rest will
+                // We probably shouldn't list players who have no points.
+                // Once we find a player with 0 points then the rest will
                 // also have 0 as it is sorted.
-                if (hunter.eggsCollected() == 0)
+                if (hunter.points() == 0)
                     return;
 
                 int rank = i + 1;
                 String rankingColour = switch (rank) {
-                    case 1 -> plugin.config().getLangLeaderboardFirstColour();
-                    case 2 -> plugin.config().getLangLeaderboardSecondColour();
-                    case 3 -> plugin.config().getLangLeaderboardThirdColour();
-                    default -> "";
+                    case 1 -> plugin.config().getLangLeaderboardFirstColor();
+                    case 2 -> plugin.config().getLangLeaderboardSecondColor();
+                    case 3 -> plugin.config().getLangLeaderboardThirdColor();
+                    default -> plugin.config().getLangLeaderboardOtherColor();
                 };
 
                 String rankingMessage = plugin.config().getLangLeaderboardFormat()
-                        .replace("%COLOUR%", rankingColour)
-                        .replace("%RANKING%", rankToOrdinal(rank))
-                        .replace("%PLAYER%", hunter.name())
-                        .replace("%NUMBEROFEGGS%", "" + hunter.eggsCollected());
+                        .replace("%Color%", rankingColour)
+                        .replace("%Ranking%", rankToOrdinal(rank))
+                        .replace("%Player%", hunter.name())
+                        .replace("%Points%", "" + hunter.points());
                 sendMessageInCentre(player, rankingMessage, centrePixel);
             }
         }

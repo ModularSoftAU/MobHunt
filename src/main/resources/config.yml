@@ -1,49 +1,64 @@
-DATABASE:
-  HOST: "127.0.0.1"
-  PORT: "4052"
-  DATABASE: "MobHunt"
-  USERNAME: "MobHunt"
-  PASSWORD: "PasswordMobHunt321"
-FEATURE:
-  MILESTONEMESSAGE: TRUE
-SOUND:
-  MINORCOLLECTIONMILESTONE: "ENTITY_PLAYER_LEVELUP"
-  MAJORCOLLECTIONMILESTONE: "UI_TOAST_CHALLENGE_COMPLETE"
-MILESTONES:
-  MINOR:
-    - 16
-    - 32
-    - 64
-    - 96
-    - 160
-    - 192
-    - 224
-  MAJOR:
-    - 500
-    - 1000
-LANG:
-  DATABASE:
-    CONNECTIONERROR: "&cA database error has occurred, please contact an Administrator."
-    CONNECTIONSUCCESS: "&aDatabase connected successfully."
-  COMMAND:
-    NOTAPLAYER: "&cYou must be a player to run this command."
-    INSUFFICENTPERMISSIONS: "&cYou do not have permission to use this command."
-    COMMANDINCOMPLETE: "&cThis command is incomplete, please refer to the command guide for reference."
-  EGG:
-    EGGFOUND: "&aYou have found an egg (%FOUNDEGGS%/%NUMBEROFEGGS%)"
-    FIRSTEGGFOUND: "&e&l%PLAYER% &5has found their first egg!"
-    LASTEGGFOUND: "&e&l%PLAYER% &5has found all &e&l%NUMBEROFEGGS% &r&5eggs!"
-    EGGALREADYFOUND: "&eYou have already found this egg."
-    EGGCOUNT: "&eYou have found &l&6%FOUNDEGGS%/%NUMBEROFEGGS% &r&eeggs."
-    # Use %PLAYER% to display players name, use %NUMBEROFEGGS% to display number of eggs.
-    EGGCOLLECTIONMILESTONEREACHED: "&e&l%PLAYER% &5has collected &e&l%NUMBEROFEGGS% &r&5mobs!"
-  LEADERBOARD:
+Database:
+  Host: "127.0.0.1"
+  Port: 3306
+  Name: "EasterEggHunt"
+  Username: "jaedanc"
+  Password: "applesTOapples123$%"
+AdminRole: "easteregghunt.clearegg"
+Features:
+  OnEnabledConsoleMessage: true
+  OnDisabledConsoleMessage: true
+  OnNewHunterConsoleMessage: true
+  MilestoneMessages: true
+MobHunt:
+  Points:
+    Sheep: 1
+Sounds:
+  MinorCollectionMilestone: ENTITY_PLAYER_LEVELUP
+  MajorCollectionMilestone: UI_TOAST_CHALLENGE_COMPLETE
+Milestones:
+  Messages:
+    Minor: [16, 32, 64, 96, 160, 192, 224]
+    Major: [128, 256]
+Leaderboard:
+  ShowPlayers: 5
+Lang:
+  # All Lang text is parsed through ChatColor.translateAlternateColorCodes with &
+  # as the altColorChat. This means that color can be encoded into the strings
+  # from here. Some strings also have variables replaced in them. If this is the
+  # case, it will be listed here.
+  Database:
+    ConnectionError: "&cA database error has occurred, please contact an Administrator."
+  Command:
+    OnMobClear: "All points have been cleared from %Player%."
+    NotAPlayer: "&cYou must be a player to run this command."
+    InsufficientPermissions: "&cYou do not have permission to use this command."
+  MobHunt:
+    NewHunter:
+      - "%Player%"
+      - "bruh"
+      - "bruh"
+      - "bruh"
+      - "bruh"
+      - "bruh"
+    Kill: "You killed a %MobType%"
+    CapReached: "You have reached the cap"
+    CollectionMilestoneReached: "&e&l%Player% &5is on %Points% points!"
+  Leaderboard:
     # You can change the length of the header to change where the "centre" is for
     # the rest of the leaderboard. Keep the line below for reference:
-    # Longest header possible: "&l============================================="
-    HEADER: "&l============================================="
-    NOEGGS: "&lNo one has found any mobs"
-    FIRSTCOLOUR: "&e"
-    SECONDCOLOUR: "&7"
-    THIRDCOLOUR: "&6"
-    FORMAT: "%COLOUR%&l%RANKING%&r&f &7-&r %PLAYER% &7- %NUMBEROFEGGS%"
+    # Chat box width: "&l============================================="
+    Header: "&l============================================="
+    NoHeadsFound: "&lNo one has killed a mob"
+    FirstColor: "&e"
+    SecondColor: "&7"
+    ThirdColor: "&6"
+    OtherColor: ""
+    Format: "%Color%&l%Ranking%&r&f &7-&r %Player% &7- %Points%"
+  Scoreboard:
+    Title: Mob Hunt
+    Content:
+      - " "
+      - "&ecraftingforchrist.net"
+      - "&e&lPoints: &f%Points%"
+      - "  "

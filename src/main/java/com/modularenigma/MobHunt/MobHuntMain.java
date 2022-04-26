@@ -1,10 +1,10 @@
 package com.modularenigma.MobHunt;
 
-import com.modularenigma.MobHunt.commands.clearmobs;
-import com.modularenigma.MobHunt.commands.mobs;
-import com.modularenigma.MobHunt.commands.leaderboard;
-import com.modularenigma.MobHunt.events.MobHunterOnJoin;
-import com.modularenigma.MobHunt.events.MobKillEvent;
+import com.modularenigma.MobHunt.commands.mobclear;
+import com.modularenigma.MobHunt.commands.mobcount;
+import com.modularenigma.MobHunt.commands.mobleaderboard;
+import com.modularenigma.MobHunt.events.OnHunterJoin;
+import com.modularenigma.MobHunt.events.OnMobKill;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.bukkit.ChatColor;
 import org.bukkit.command.ConsoleCommandSender;
@@ -29,35 +29,36 @@ public class MobHuntMain extends JavaPlugin {
         // Generate configuration file
         saveDefaultConfig();
         config = new PluginConfig(this);
-        console = getServer().getConsoleSender();
 
-        MobHuntChatController eggChatController = new MobHuntChatController(this);
-        MobHuntScoreboardController eggScoreboardController = new MobHuntScoreboardController(this);
+        HunterController hunterController = new HunterController(this);
+        ScoreboardController scoreboardController = new ScoreboardController(this);
 
         // Connect to the database
         establishConnection();
 
         // Plugin Event Register
-        PluginManager pluginmanager = getServer().getPluginManager();
-        pluginmanager.registerEvents(new MobHunterOnJoin(this, eggChatController, eggScoreboardController), this);
-        pluginmanager.registerEvents(new MobKillEvent(this, eggChatController, eggScoreboardController), this);
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new OnHunterJoin(this, hunterController, scoreboardController), this);
+        pluginManager.registerEvents(new OnMobKill(this, hunterController, scoreboardController), this);
 
         // Command Registry
-        Objects.requireNonNull(getCommand("mobs")).setExecutor(new mobs(this, eggChatController));
-        Objects.requireNonNull(getCommand("clearmobs")).setExecutor(new clearmobs(this, eggChatController, eggScoreboardController));
-        Objects.requireNonNull(getCommand("leaderboard")).setExecutor(new leaderboard(this, eggChatController));
+        Objects.requireNonNull(getCommand("mobcount")).setExecutor(new mobcount(this, hunterController));
+        Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
+        Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
 
-        // Plugin Load Message
-        console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
-        console.sendMessage(ChatColor.GREEN + "Running Version: " + getDescription().getVersion());
-        console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularEnigma/MobHunt");
-        console.sendMessage(ChatColor.GREEN + "Created By: " + getDescription().getAuthors());
+        console = getServer().getConsoleSender();
+        if (config.isFeatureOnEnableConsoleMessageEnabled()) {
+            console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
+            console.sendMessage(ChatColor.GREEN + "Running Version: " + getDescription().getVersion());
+            console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularEnigma/MobHunt");
+            console.sendMessage(ChatColor.GREEN + "Created By: " + getDescription().getAuthors());
+        }
     }
 
     @Override
     public void onDisable() {
-        // Plugin Shutdown Message
-        console.sendMessage(ChatColor.RED + getDescription().getName() + " is now disabled.");
+        if (config.isFeatureOnDisableConsoleMessageEnabled())
+            console.sendMessage(ChatColor.RED + getDescription().getName() + " is now disabled.");
     }
 
     public void establishConnection() {

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MobHuntQuery {
-    public record EggHunter(@Getter String name, @Getter int eggsCollected) { }
+    public record MobHunter(@Getter String name, @Getter int points) { }
 
     /**
      * @param plugin The EasterEggHunt main plugin
@@ -165,8 +165,8 @@ public class MobHuntQuery {
      * @param player The player who issued the command
      * @return Returns a list of the Best Hunters. idx 0 is the best player and so on...
      */
-    public static List<EggHunter> getBestHunters(MobHuntMain plugin, Player player, int topHunters) {
-        List<EggHunter> bestHunters = new ArrayList<>();
+    public static List<MobHunter> getBestHunters(MobHuntMain plugin, Player player, int topHunters) {
+        List<MobHunter> bestHunters = new ArrayList<>();
 
         try {
             // Check if a player has been added into the database already.
@@ -179,7 +179,7 @@ public class MobHuntQuery {
             while (results.next()) {
                 String name = results.getString("username");
                 int eggsCollected = results.getInt("eggsCollected");
-                bestHunters.add(new EggHunter(name, eggsCollected));
+                bestHunters.add(new MobHunter(name, eggsCollected));
             }
         } catch (SQLException e) {
             e.printStackTrace();
