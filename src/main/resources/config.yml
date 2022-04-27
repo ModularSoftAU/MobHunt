@@ -12,7 +12,78 @@ Features:
   MilestoneMessages: true
 MobHunt:
   Points:
+    # It is important these line up 1 to 1 with
+    # their corresponding Minecraft Entity names.
+    Axolotl: 0
+    Bat: 2
+    Bee: 6
+    Blaze: 6
+    Cat: 2
+    Cave Spider: 6
+    Chicken: 1
+    Cod: 2
+    Cow: 1
+    Creeper: 4
+    Dolphin: 2
+    Donkey: 6
+    Drowned: 5
+    Elder Guardian: 20
+    Ender Dragon: 50
+    Enderman: 3
+    Endermite: 8
+    Evoker: 8
+    Fox: 3
+    Ghast: 6
+    Glow Squid: 6
+    Goat: 6
+    Guardian: 8
+    Hoglin: 8
+    Horse: 3
+    Husk: 6
+    Iron Golem: 5
+    Llama: 3
+    Magma Cube: 6
+    Mooshroom: 5
+    Mule: 6
+    Ocelot: 6
+    Panda: 5
+    Parrot: 6
+    Phantom: 6
+    Pig: 1
+    Piglin Brute: 10
+    Piglin: 4
+    Pillager: 8
+    Polar Bear: 4
+    Pufferfish: 3
+    Rabbit: 2
+    Ravenger: 8
+    Salmon: 1
     Sheep: 1
+    Shulker: 8
+    Silverfish: 3
+    Skeleton Horse: 12
+    Skeleton: 4
+    Slime: 6
+    Snow Golem: 3
+    Spider: 4
+    Squid: 2
+    Stray: 6
+    Strider: 8
+    Trader Llama: 4
+    Tropical Fish: 3
+    Turtle: 3
+    Vex: 10
+    Villager: 3
+    Vindicator: 8
+    Wandering Trader: 4
+    Witch: 6
+    Wither Skeleton: 6
+    Wither: 30
+    Wolf: 3
+    Zoglin: 15
+    Zombie Villager: 6
+    Zombie: 4
+    Zombified Piglin: 0
 Sounds:
   MinorCollectionMilestone: ENTITY_PLAYER_LEVELUP
   MajorCollectionMilestone: UI_TOAST_CHALLENGE_COMPLETE

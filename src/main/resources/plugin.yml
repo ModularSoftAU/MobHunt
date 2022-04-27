@@ -6,13 +6,13 @@ authors: [Ben Robson, ModularEnigma]
 api-version: 1.18
 
 commands:
-  mobs:
-    description: Grab the amount of eggs you have.
-    usage: /eggs
-  clearmobs:
+  mobcount:
+    description: Shows a breakdown of the mobs you've killed.
+    usage: /mobcount
+  mobclear:
     description: Clear all mobs from yourself, all or a specific mob.
-    usage: /clearmobs [all/type] [mobtype]
-  leaderboardmobs:
+    usage: /mobclear [all/type] [mobtype]
+  mobleaderboard:
     description: Show the Top 5 Mob Hunters of overall or a specific mob.
-    usage: /leaderboardmobs [all/type]
+    usage: /mobleaderboard [all/type]
     aliases: [lb, leaderboard]

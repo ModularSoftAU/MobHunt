@@ -29,6 +29,7 @@ public class MobHuntMain extends JavaPlugin {
         // Generate configuration file
         saveDefaultConfig();
         config = new PluginConfig(this);
+        console = getServer().getConsoleSender();
 
         HunterController hunterController = new HunterController(this);
         ScoreboardController scoreboardController = new ScoreboardController(this);
@@ -46,7 +47,6 @@ public class MobHuntMain extends JavaPlugin {
         Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
         Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
 
-        console = getServer().getConsoleSender();
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
             console.sendMessage(ChatColor.GREEN + "Running Version: " + getDescription().getVersion());

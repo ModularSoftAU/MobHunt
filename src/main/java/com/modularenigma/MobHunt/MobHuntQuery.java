@@ -18,20 +18,20 @@ public class MobHuntQuery {
      * @return Returns the number of eggs found by the player
      */
     public static int foundEggsCount(MobHuntMain plugin, Player player) {
-        String playerUUID = "" + player.getUniqueId();
-
-        try {
-            // Check how many eggs the player has collected.
-            PreparedStatement foundEggsCount = plugin.getConnection().prepareStatement(
-                    "SELECT eggsCollected AS 'eastereggs' FROM playerdata WHERE uuid=?");
-            foundEggsCount.setString(1, playerUUID);
-            ResultSet results = foundEggsCount.executeQuery();
-
-            if (results.next()) return results.getInt("eastereggs");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
-        }
+//        String playerUUID = "" + player.getUniqueId();
+//
+//        try {
+//            // Check how many eggs the player has collected.
+//            PreparedStatement foundEggsCount = plugin.getConnection().prepareStatement(
+//                    "SELECT eggsCollected AS 'eastereggs' FROM playerdata WHERE uuid=?");
+//            foundEggsCount.setString(1, playerUUID);
+//            ResultSet results = foundEggsCount.executeQuery();
+//
+//            if (results.next()) return results.getInt("eastereggs");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+//        }
         return 0;
     }
 
@@ -42,28 +42,28 @@ public class MobHuntQuery {
      * @return Returns true if the clear was successful.
      */
     public static boolean clearEggs(MobHuntMain plugin, Player player) {
-        String playerUUID = "" + player.getUniqueId();
-
-        //
-        // Database Query
-        // Check how many eggs the player has collected.
-        //
-        try {
-            PreparedStatement clearEggsStatement = plugin.getConnection().prepareStatement(
-                    "DELETE FROM eastereggs WHERE playerid=(SELECT id FROM playerdata WHERE uuid=?)");
-            clearEggsStatement.setString(1, playerUUID);
-            clearEggsStatement.executeUpdate();
-
-            PreparedStatement resetEggCountStatement = plugin.getConnection().prepareStatement(
-                    "UPDATE playerdata SET eggsCollected = 0 WHERE uuid = ?");
-            resetEggCountStatement.setString(1, playerUUID);
-            resetEggCountStatement.executeUpdate();
-            return true;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
-        }
+//        String playerUUID = "" + player.getUniqueId();
+//
+//        //
+//        // Database Query
+//        // Check how many eggs the player has collected.
+//        //
+//        try {
+//            PreparedStatement clearEggsStatement = plugin.getConnection().prepareStatement(
+//                    "DELETE FROM eastereggs WHERE playerid=(SELECT id FROM playerdata WHERE uuid=?)");
+//            clearEggsStatement.setString(1, playerUUID);
+//            clearEggsStatement.executeUpdate();
+//
+//            PreparedStatement resetEggCountStatement = plugin.getConnection().prepareStatement(
+//                    "UPDATE playerdata SET eggsCollected = 0 WHERE uuid = ?");
+//            resetEggCountStatement.setString(1, playerUUID);
+//            resetEggCountStatement.executeUpdate();
+//            return true;
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+//        }
 
         return false;
     }
@@ -78,24 +78,24 @@ public class MobHuntQuery {
      * @return True if the egg has already been found
      */
     public static boolean hasAlreadyCollectedEgg(MobHuntMain plugin, Player player, int x, int y, int z) {
-        String playerUUID = player.getUniqueId().toString();
-
-        try {
-            // Check if the player has already found that Easter Egg before.
-            PreparedStatement hasAlreadyFoundEggStatement = plugin.getConnection().prepareStatement(
-                    "SELECT e.* FROM eastereggs e JOIN playerdata p ON e.playerid = p.id WHERE p.uuid = ? AND eggcordx=? AND eggcordy=? AND eggcordz=?");
-            hasAlreadyFoundEggStatement.setString(1, playerUUID);
-            hasAlreadyFoundEggStatement.setString(2, "" + x);
-            hasAlreadyFoundEggStatement.setString(3, "" + y);
-            hasAlreadyFoundEggStatement.setString(4, "" + z);
-            ResultSet results = hasAlreadyFoundEggStatement.executeQuery();
-
-            // Return's true if we already found the egg.
-            return results.next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
-        }
+//        String playerUUID = player.getUniqueId().toString();
+//
+//        try {
+//            // Check if the player has already found that Easter Egg before.
+//            PreparedStatement hasAlreadyFoundEggStatement = plugin.getConnection().prepareStatement(
+//                    "SELECT e.* FROM eastereggs e JOIN playerdata p ON e.playerid = p.id WHERE p.uuid = ? AND eggcordx=? AND eggcordy=? AND eggcordz=?");
+//            hasAlreadyFoundEggStatement.setString(1, playerUUID);
+//            hasAlreadyFoundEggStatement.setString(2, "" + x);
+//            hasAlreadyFoundEggStatement.setString(3, "" + y);
+//            hasAlreadyFoundEggStatement.setString(4, "" + z);
+//            ResultSet results = hasAlreadyFoundEggStatement.executeQuery();
+//
+//            // Return's true if we already found the egg.
+//            return results.next();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+//        }
         return false;
     }
 
@@ -106,25 +106,25 @@ public class MobHuntQuery {
      * @param mobType The type of mob that was killed
      */
     public static void insertKilledMob(MobHuntMain plugin, Player player, String mobType) {
-        String playerUUID = player.getUniqueId().toString();
-
-        try {
-            // Insert Mob
-            PreparedStatement insertCollectedEggStatement = plugin.getConnection().prepareStatement(
-                    "INSERT INTO mobs (playerid, mobType) " +
-                            "VALUES ((SELECT id FROM playerdata WHERE uuid=?), ?)");
-            insertCollectedEggStatement.setString(1, playerUUID);
-            insertCollectedEggStatement.setString(2, String.valueOf(mobType));
-            insertCollectedEggStatement.executeUpdate();
-
-            PreparedStatement updatePlayersEggsCollectedStatement = plugin.getConnection().prepareStatement(
-                    "UPDATE playerdata SET mobsKilled = mobsKilled + 1 WHERE uuid = ?");
-            updatePlayersEggsCollectedStatement.setString(1, "" + player.getUniqueId());
-            updatePlayersEggsCollectedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
-        }
+//        String playerUUID = player.getUniqueId().toString();
+//
+//        try {
+//            // Insert Mob
+//            PreparedStatement insertCollectedEggStatement = plugin.getConnection().prepareStatement(
+//                    "INSERT INTO mobs (playerid, mobType) " +
+//                            "VALUES ((SELECT id FROM playerdata WHERE uuid=?), ?)");
+//            insertCollectedEggStatement.setString(1, playerUUID);
+//            insertCollectedEggStatement.setString(2, String.valueOf(mobType));
+//            insertCollectedEggStatement.executeUpdate();
+//
+//            PreparedStatement updatePlayersEggsCollectedStatement = plugin.getConnection().prepareStatement(
+//                    "UPDATE playerdata SET mobsKilled = mobsKilled + 1 WHERE uuid = ?");
+//            updatePlayersEggsCollectedStatement.setString(1, "" + player.getUniqueId());
+//            updatePlayersEggsCollectedStatement.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+//        }
     }
 
     /**
@@ -133,30 +133,30 @@ public class MobHuntQuery {
      * @return Returns true if the player specified was indeed a new player.
      */
     public static boolean addNewHunter(MobHuntMain plugin, Player player) {
-        String playerUUID = player.getUniqueId().toString();
-        String username = player.getName();
-
-        try {
-            // Check if a player has been added into the database already.
-            PreparedStatement findstatement = plugin.getConnection().prepareStatement(
-                    "SELECT * FROM playerdata WHERE uuid=?");
-            findstatement.setString(1, playerUUID);
-            ResultSet results = findstatement.executeQuery();
-
-            // The player already exists
-            if (results.next())
-                return false;
-
-            PreparedStatement insertstatement = plugin.getConnection().prepareStatement(
-                    "INSERT INTO playerdata (uuid, username) VALUES (?, ?)");
-            insertstatement.setString(1, playerUUID);
-            insertstatement.setString(2, username);
-            insertstatement.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
-        }
+//        String playerUUID = player.getUniqueId().toString();
+//        String username = player.getName();
+//
+//        try {
+//            // Check if a player has been added into the database already.
+//            PreparedStatement findstatement = plugin.getConnection().prepareStatement(
+//                    "SELECT * FROM playerdata WHERE uuid=?");
+//            findstatement.setString(1, playerUUID);
+//            ResultSet results = findstatement.executeQuery();
+//
+//            // The player already exists
+//            if (results.next())
+//                return false;
+//
+//            PreparedStatement insertstatement = plugin.getConnection().prepareStatement(
+//                    "INSERT INTO playerdata (uuid, username) VALUES (?, ?)");
+//            insertstatement.setString(1, playerUUID);
+//            insertstatement.setString(2, username);
+//            insertstatement.executeUpdate();
+//            return true;
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+//        }
         return false;
     }
 
@@ -168,23 +168,23 @@ public class MobHuntQuery {
     public static List<MobHunter> getBestHunters(MobHuntMain plugin, Player player, int topHunters) {
         List<MobHunter> bestHunters = new ArrayList<>();
 
-        try {
-            // Check if a player has been added into the database already.
-            PreparedStatement getEggHuntersStatement = plugin.getConnection().prepareStatement(
-                    "SELECT username, eggsCollected, id FROM playerdata ORDER BY eggsCollected DESC LIMIT ?");
-            getEggHuntersStatement.setInt(1, topHunters);
-            ResultSet results = getEggHuntersStatement.executeQuery();
-
-            // The player already exists
-            while (results.next()) {
-                String name = results.getString("username");
-                int eggsCollected = results.getInt("eggsCollected");
-                bestHunters.add(new MobHunter(name, eggsCollected));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
-        }
+//        try {
+//            // Check if a player has been added into the database already.
+//            PreparedStatement getEggHuntersStatement = plugin.getConnection().prepareStatement(
+//                    "SELECT username, eggsCollected, id FROM playerdata ORDER BY eggsCollected DESC LIMIT ?");
+//            getEggHuntersStatement.setInt(1, topHunters);
+//            ResultSet results = getEggHuntersStatement.executeQuery();
+//
+//            // The player already exists
+//            while (results.next()) {
+//                String name = results.getString("username");
+//                int eggsCollected = results.getInt("eggsCollected");
+//                bestHunters.add(new MobHunter(name, eggsCollected));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+//        }
         return bestHunters;
     }
 }
