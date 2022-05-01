@@ -31,15 +31,20 @@ public class OnMobKill implements Listener {
             return;
 
         int points = plugin.getConfig().getInt("MobHunt.Points." + deadEntity.getName());
-        plugin.getServer().getConsoleSender().sendMessage(
-                player.getName() + " killed " + deadEntity.getName() + " for " + points + " points.");
-
 
         // TODO: Do some maths to ensure we aren't querying past the cap
-        MobHuntQuery.insertKilledMob(plugin, player, event.getEntity().getName());
+        MobHuntQuery.insertKilledMob(plugin, player, deadEntity.getName());
+
+        int killedMobs = MobHuntQuery.killedMobsCount(plugin, player, deadEntity.getName());
+        plugin.getServer().getConsoleSender().sendMessage(
+                player.getName() + " killed their " + killedMobs + deadEntity.getName() + " for " + points + " points");
+
+        MobHuntQuery.addPoints(plugin, player, points);
+        scoreboardController.reloadScoreboard(player, MobHuntQuery.getPoints(plugin, player));
 
         // TODO: Include a response based on the above condition:
         //       Reached the cap or received points.
+        hunterController.mobKilledResponse(player, deadEntity.getName(), points);
 
         // TODO: Include a milestone trigger if it is relevant.
         Map<Integer, CollectionMilestone> milestones = plugin.config().getCollectionMilestones();

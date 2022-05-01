@@ -14,6 +14,12 @@ public class HunterController {
         this.plugin = plugin;
     }
 
+    public void mobKilledResponse(Player player, String mobType, int points) {
+        player.sendMessage(plugin.config().getLangMobKilled()
+                .replace("%MobType%", mobType)
+                .replace("%Points%", "" + points));
+    }
+
     public void collectionMilestoneReachedResponse(Player player, boolean isMajorSound, int points) {
         if (!plugin.config().isFeatureMilestoneMessageEnabled())
             return;

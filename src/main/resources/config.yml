@@ -1,7 +1,7 @@
 Database:
   Host: "127.0.0.1"
   Port: 3306
-  Name: "EasterEggHunt"
+  Name: "MobHunt"
   Username: "jaedanc"
   Password: "applesTOapples123$%"
 AdminRole: "easteregghunt.clearegg"
@@ -112,7 +112,7 @@ Lang:
       - "bruh"
       - "bruh"
       - "bruh"
-    Kill: "You killed a %MobType%"
+    Kill: "You killed a %MobType% for %Points% points."
     CapReached: "You have reached the cap"
     CollectionMilestoneReached: "&e&l%Player% &5is on %Points% points!"
   Leaderboard:
