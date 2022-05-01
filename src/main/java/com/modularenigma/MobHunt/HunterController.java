@@ -17,7 +17,25 @@ public class HunterController {
     public void mobKilledResponse(Player player, String mobType, int points) {
         player.sendMessage(plugin.config().getLangMobKilled()
                 .replace("%MobType%", mobType)
-                .replace("%Points%", "" + points));
+                .replace("%Points%", "" + points)
+                .replace("%Plural%", points == 1 ? "" : "s"));
+    }
+
+    public void mobKilledCapReachedResponse(Player player, String mobType, int kills, int cap) {
+        player.sendMessage(plugin.config().getLangMobKilledCapReached()
+                .replace("%MobType%", mobType)
+                .replace("%Kills%", "" + kills)
+                .replace("%Cap%", "" + cap));
+    }
+
+    public void mobCountResponse(Player player, List<MobHuntQuery.MobStat> stats) {
+        player.sendMessage(plugin.config().getLangStatsHeader()
+                .replace("%Player%", player.getName()));
+        for (MobHuntQuery.MobStat stat : stats) {
+            player.sendMessage(plugin.config().getLangStatsFormat()
+                    .replace("%MobType%", stat.mobType())
+                    .replace("%Kills%", "" + stat.mobsKilled()));
+        }
     }
 
     public void collectionMilestoneReachedResponse(Player player, boolean isMajorSound, int points) {
@@ -55,19 +73,6 @@ public class HunterController {
     public void newPlayerJoinsTheHunt(Player player) {
         for (String s : plugin.config().getLangNewHunter())
             player.sendMessage(s.replace("%Player%", player.getName()));
-    }
-
-    /**
-     * When a player wants to see a breakdown of their points.
-     * @param player The player to respond to.
-     */
-    public void playersOwnPointsResponse(Player player) {
-        // TODO: Need to introduce a format of showing these statistics to the player
-        //       Potentially need a different to command to show a breakdown and/or
-        //       only the points. Needs further testing and design.
-//        player.sendMessage(plugin.config().getLangPoints()
-//                .replace("%FOUNDEGGS%", "" + MobHuntQuery.foundEggsCount(plugin, player))
-//                .replace("%NUMBEROFEGGS%", "" + plugin.config().getTotalEggs()));
     }
 
     public void playerClearedTheirPointsResponse(Player player) {

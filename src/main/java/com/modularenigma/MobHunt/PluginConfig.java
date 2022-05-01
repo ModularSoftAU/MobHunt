@@ -10,6 +10,7 @@ import java.util.*;
 
 public class PluginConfig {
     private final MobHuntMain plugin;
+    private FileConfiguration config;
 
     @Getter private String databaseHost;
     @Getter private int databasePort;
@@ -27,13 +28,15 @@ public class PluginConfig {
     @Getter private Sound soundMinorCollectionMilestone;
     @Getter private Sound soundMajorCollectionMilestone;
 
-    @Getter private Map<Integer, CollectionMilestone> collectionMilestones;
+    @Getter private List<CollectionMilestone> collectionMilestones;
     @Getter private int leaderboardShowPlayers;
 
     @Getter private String langDatabaseConnectionError;
     @Getter private String langOnMobClear;
     @Getter private String langNotAPlayer;
     @Getter private String langInsufficientPermissions;
+    @Getter private String langStatsHeader;
+    @Getter private String langStatsFormat;
     @Getter private List<String> langNewHunter;
     @Getter private String langMobKilled;
     @Getter private String langMobKilledCapReached;
@@ -57,7 +60,7 @@ public class PluginConfig {
 
     public void reloadConfig() {
         plugin.reloadConfig();
-        FileConfiguration config = plugin.getConfig();
+        config = plugin.getConfig();
 
         databaseHost = config.getString("Database.Host");
         databasePort = config.getInt("Database.Port");
@@ -75,11 +78,12 @@ public class PluginConfig {
         soundMinorCollectionMilestone = Sound.valueOf(config.getString("Sounds.MinorCollectionMilestone"));
         soundMajorCollectionMilestone = Sound.valueOf(config.getString("Sounds.MajorCollectionMilestone"));
 
-        collectionMilestones = new HashMap<>();
+        collectionMilestones = new ArrayList<>();
         for (Integer minor : config.getIntegerList("Milestones.Messages.Minor"))
-            collectionMilestones.put(minor, new CollectionMilestone(minor, false));
+            collectionMilestones.add(new CollectionMilestone(minor, false));
         for (Integer major : config.getIntegerList("Milestones.Messages.Major"))
-            collectionMilestones.put(major, new CollectionMilestone(major, true));
+            collectionMilestones.add(new CollectionMilestone(major, true));
+        collectionMilestones.sort(Comparator.comparingInt(CollectionMilestone::getPoints));
 
         leaderboardShowPlayers = config.getInt("Leaderboard.ShowPlayers");
 
@@ -87,8 +91,10 @@ public class PluginConfig {
         langOnMobClear =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.OnMobClear")));
         langNotAPlayer =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.NotAPlayer")));
         langInsufficientPermissions =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.InsufficientPermissions")));
+        langStatsHeader =                ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.Stats.Header")));
+        langStatsFormat =                ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.Stats.Format")));
         langNewHunter = new ArrayList<>();
-        for (String s : config.getStringList("Lang.Hunt.NewHunter"))
+        for (String s : config.getStringList("Lang.MobHunt.NewHunter"))
             langNewHunter.add(ChatColor.translateAlternateColorCodes('&', s));
         langMobKilled =                  ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.Kill")));
         langMobKilledCapReached =        ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.CapReached")));
@@ -106,7 +112,7 @@ public class PluginConfig {
             langScoreboardContent.add(ChatColor.translateAlternateColorCodes('&', s));
     }
 
-    public void save() {
-        plugin.saveConfig();
+    public int getMobPoints(String mobType) {
+        return config.getInt("MobHunt.Points." + mobType);
     }
 }

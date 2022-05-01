@@ -32,8 +32,10 @@ public class mobclear implements CommandExecutor {
             return true;
         }
 
-        // TODO: Clear the points from the player
-        // TODO: Give an appropriate response to the player.
+        if (MobHuntQuery.clearMobs(plugin, player)) {
+            hunterController.playerClearedTheirPointsResponse(player);
+            scoreboardController.reloadScoreboard(player, MobHuntQuery.getPoints(plugin, player));
+        }
         return true;
     }
 }

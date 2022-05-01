@@ -56,7 +56,7 @@ MobHunt:
     Polar Bear: 4
     Pufferfish: 3
     Rabbit: 2
-    Ravenger: 8
+    Ravager: 8
     Salmon: 1
     Sheep: 1
     Shulker: 8
@@ -104,6 +104,9 @@ Lang:
     OnMobClear: "All points have been cleared from %Player%."
     NotAPlayer: "&cYou must be a player to run this command."
     InsufficientPermissions: "&cYou do not have permission to use this command."
+    Stats:
+      Header: "%Player% MobHunt Statistics"
+      Format: "%MobType%: %Kills%"
   MobHunt:
     NewHunter:
       - "%Player%"
@@ -112,9 +115,9 @@ Lang:
       - "bruh"
       - "bruh"
       - "bruh"
-    Kill: "You killed a %MobType% for %Points% points."
-    CapReached: "You have reached the cap"
-    CollectionMilestoneReached: "&e&l%Player% &5is on %Points% points!"
+    Kill: "You killed a %MobType% for %Points% point%Plural%."
+    CapReached: "You killed a %MobType% but have reached the cap %Kills%/%Cap%."
+    CollectionMilestoneReached: "&e&l%Player% &5has surpassed %Points% points!"
   Leaderboard:
     # You can change the length of the header to change where the "centre" is for
     # the rest of the leaderboard. Keep the line below for reference:

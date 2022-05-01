@@ -2,17 +2,18 @@ package com.modularenigma.MobHunt.commands;
 
 import com.modularenigma.MobHunt.MobHuntMain;
 import com.modularenigma.MobHunt.HunterController;
+import com.modularenigma.MobHunt.MobHuntQuery;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class mobcount implements CommandExecutor {
+public class mobstats implements CommandExecutor {
     private final MobHuntMain plugin;
     private final HunterController hunterController;
 
-    public mobcount(MobHuntMain plugin, HunterController hunterController) {
+    public mobstats(MobHuntMain plugin, HunterController hunterController) {
         this.plugin = plugin;
         this.hunterController = hunterController;
     }
@@ -24,8 +25,7 @@ public class mobcount implements CommandExecutor {
             return true;
         }
 
-        // TODO: Decide on how this is going to work.
-        //       Show it show the stats of every mob killed?
+        hunterController.mobCountResponse(player, MobHuntQuery.killedMobStats(plugin, player));
         return true;
     }
 

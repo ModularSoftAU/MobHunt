@@ -11,22 +11,22 @@ import java.util.List;
 
 public class MobHuntQuery {
     public record MobHunter(@Getter String name, @Getter int points) { }
+    public record MobStat(@Getter String mobType, @Getter int mobsKilled) { }
 
     /**
-     * @param plugin The EasterEggHunt main plugin
+     * @param plugin The MobHuntMain main plugin
      * @param player The player to check
      * @return Returns the number of eggs found by the player
      */
-    public static int killedMobsCount(MobHuntMain plugin, Player player, String mobType) {
+    public static int killedMobTypeCount(MobHuntMain plugin, Player player, String mobType) {
         String playerUUID = "" + player.getUniqueId();
 
         try {
-            // Check how many eggs the player has collected.
-            PreparedStatement foundEggsCount = plugin.getConnection().prepareStatement(
+            PreparedStatement mobsKilledStatement = plugin.getConnection().prepareStatement(
                     "SELECT mobsKilled FROM mobs WHERE uuid=? AND mobType=?");
-            foundEggsCount.setString(1, playerUUID);
-            foundEggsCount.setString(2, mobType);
-            ResultSet results = foundEggsCount.executeQuery();
+            mobsKilledStatement.setString(1, playerUUID);
+            mobsKilledStatement.setString(2, mobType);
+            ResultSet results = mobsKilledStatement.executeQuery();
 
             if (results.next())
                 return results.getInt(1);
@@ -35,6 +35,33 @@ public class MobHuntQuery {
             player.sendMessage(plugin.config().getLangDatabaseConnectionError());
         }
         return 0;
+    }
+
+    /**
+     * @param plugin The EasterEggHunt main plugin
+     * @param player The player to check
+     * @return Returns the number of eggs found by the player
+     */
+    public static List<MobStat> killedMobStats(MobHuntMain plugin, Player player) {
+        List<MobStat> mobStats = new ArrayList<>();
+        String playerUUID = "" + player.getUniqueId();
+
+        try {
+            // Check how many eggs the player has collected.
+            PreparedStatement foundEggsCount = plugin.getConnection().prepareStatement(
+                    "SELECT mobType, mobsKilled FROM mobs WHERE uuid=? ORDER BY mobType");
+            foundEggsCount.setString(1, playerUUID);
+            ResultSet results = foundEggsCount.executeQuery();
+
+            while (results.next())
+                mobStats.add(new MobStat(results.getString(1),
+                                         results.getInt(2)));
+            return mobStats;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+        }
+        return mobStats;
     }
 
     public static int getPoints(MobHuntMain plugin, Player player) {
@@ -86,6 +113,11 @@ public class MobHuntQuery {
                     "DELETE FROM mobs WHERE uuid=?");
             clearEggsStatement.setString(1, playerUUID);
             clearEggsStatement.executeUpdate();
+
+            PreparedStatement clearPointsStatement = plugin.getConnection().prepareStatement(
+                    "UPDATE points SET n = 0 WHERE uuid=?");
+            clearPointsStatement.setString(1, playerUUID);
+            clearPointsStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,7 +133,7 @@ public class MobHuntQuery {
      * @param mobType The type of mob that was killed
      * @return The number of mobs killed
      */
-    public static int insertKilledMob(MobHuntMain plugin, Player player, String mobType) {
+    public static int incrementKilledMob(MobHuntMain plugin, Player player, String mobType) {
         String playerUUID = "" + player.getUniqueId();
 
         try {

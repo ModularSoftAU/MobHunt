@@ -6,9 +6,9 @@ authors: [Ben Robson, ModularEnigma]
 api-version: 1.18
 
 commands:
-  mobcount:
+  mobstats:
     description: Shows a breakdown of the mobs you've killed.
-    usage: /mobcount
+    usage: /mobstats
   mobclear:
     description: Clear all mobs from yourself, all or a specific mob.
     usage: /mobclear [all/type] [mobtype]

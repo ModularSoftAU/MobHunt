@@ -1,7 +1,7 @@
 package com.modularenigma.MobHunt;
 
 import com.modularenigma.MobHunt.commands.mobclear;
-import com.modularenigma.MobHunt.commands.mobcount;
+import com.modularenigma.MobHunt.commands.mobstats;
 import com.modularenigma.MobHunt.commands.mobleaderboard;
 import com.modularenigma.MobHunt.events.OnHunterJoin;
 import com.modularenigma.MobHunt.events.OnMobKill;
@@ -43,7 +43,7 @@ public class MobHuntMain extends JavaPlugin {
         pluginManager.registerEvents(new OnMobKill(this, hunterController, scoreboardController), this);
 
         // Command Registry
-        Objects.requireNonNull(getCommand("mobcount")).setExecutor(new mobcount(this, hunterController));
+        Objects.requireNonNull(getCommand("mobstats")).setExecutor(new mobstats(this, hunterController));
         Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
         Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
 
