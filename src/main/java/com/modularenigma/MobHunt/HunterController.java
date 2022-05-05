@@ -3,6 +3,7 @@ package com.modularenigma.MobHunt;
 import com.modularenigma.MobHunt.helpers.DefaultFontInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -29,13 +30,25 @@ public class HunterController {
     }
 
     public void mobCountResponse(Player player, List<MobHuntQuery.MobStat> stats) {
-        player.sendMessage(plugin.config().getLangStatsHeader()
-                .replace("%Player%", player.getName()));
+        int centrePixel = minecraftMessageLengthInPixels(
+                plugin.config().getLangLeaderboardHeader()) / 2;
+
+        String title = plugin.config().getLangStatsTitle()
+                .replace("%Player%", player.getName());
+
+        sendMessageInCentre(player, title, centrePixel);
+
         for (MobHuntQuery.MobStat stat : stats) {
-            player.sendMessage(plugin.config().getLangStatsFormat()
+            String statMessage = plugin.config().getLangStatsFormat()
                     .replace("%MobType%", stat.mobType())
-                    .replace("%Kills%", "" + stat.mobsKilled()));
+                    .replace("%Kills%", "" + stat.mobsKilled());
+            sendMessageInCentre(player, statMessage, centrePixel);
         }
+    }
+
+    public void mobHelpResponse(CommandSender sender) {
+        for (String s : plugin.config().getLangMobHelp())
+            sender.sendMessage(s);
     }
 
     public void collectionMilestoneReachedResponse(Player player, boolean isMajorSound, int points) {
@@ -76,8 +89,12 @@ public class HunterController {
     }
 
     public void playerClearedTheirPointsResponse(Player player) {
-        player.sendMessage(plugin.config().getLangOnMobClear()
-                .replace("%Player%", player.getName()));
+        playerClearedTheirPointsResponse(player, player.getName());
+    }
+
+    public void playerClearedTheirPointsResponse(CommandSender messageRecipient, String aboutPlayerName) {
+        messageRecipient.sendMessage(plugin.config().getLangOnMobClear()
+                .replace("%Player%", aboutPlayerName));
     }
 
     /**
@@ -131,7 +148,7 @@ public class HunterController {
         StringBuilder sb = new StringBuilder();
         int spaceLength = DefaultFontInfo.SPACE.getLength() + 1;
         int compensated = 0;
-        while(compensated < pixels){
+        while (compensated < pixels){
             sb.append(" ");
             compensated += spaceLength;
         }
@@ -153,12 +170,19 @@ public class HunterController {
     }
 
     public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters) {
+        showLeaderBoardResponse(player, bestHunters, null);
+    }
+
+    public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters, String title) {
         int centrePixel = minecraftMessageLengthInPixels(
                 plugin.config().getLangLeaderboardHeader()) / 2;
 
         // Show the header first
         sendMessageInCentre(player, plugin.config().getLangLeaderboardHeader(), centrePixel);
         player.sendMessage("");
+
+        if (title != null)
+            sendMessageInCentre(player, title, centrePixel);
 
         if (bestHunters.size() == 0) {
             // If there are no hunters we should probably tell the player
@@ -171,7 +195,7 @@ public class HunterController {
                 // Once we find a player with 0 points then the rest will
                 // also have 0 as it is sorted.
                 if (hunter.points() == 0)
-                    return;
+                    break;
 
                 int rank = i + 1;
                 String rankingColour = switch (rank) {

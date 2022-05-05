@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class mobleaderboard implements CommandExecutor {
@@ -25,9 +27,24 @@ public class mobleaderboard implements CommandExecutor {
             return true;
         }
 
-        List<MobHuntQuery.MobHunter> bestHunters =
-                MobHuntQuery.getBestHunters(plugin, player, plugin.config().getLeaderboardShowPlayers());
-        hunterController.showLeaderBoardResponse(player, bestHunters);
+        int showPlayers = plugin.config().getLeaderboardShowPlayers();
+        if (args.length > 0) {
+            String mobType = String.join(" ", args);
+            if (plugin.config().getMobPoints(mobType) == null) {
+                player.sendMessage(plugin.config().getLangLeaderboardStringNotAMob());
+                return true;
+            }
+
+            List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestMobTypeHunters(
+                    plugin, player, showPlayers, mobType);
+            String leaderboardTitle = plugin.config().getLangLeaderboardMobTitleFormat()
+                    .replace("%MobType%", mobType);
+            hunterController.showLeaderBoardResponse(player, bestHunters, leaderboardTitle);
+        } else {
+            List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestHunters(
+                    plugin, player, showPlayers);
+            hunterController.showLeaderBoardResponse(player, bestHunters);
+        }
         return true;
     }
 }

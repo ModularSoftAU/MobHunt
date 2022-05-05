@@ -1,12 +1,14 @@
 package com.modularenigma.MobHunt;
 
 import com.modularenigma.MobHunt.commands.mobclear;
+import com.modularenigma.MobHunt.commands.mobhelp;
 import com.modularenigma.MobHunt.commands.mobstats;
 import com.modularenigma.MobHunt.commands.mobleaderboard;
 import com.modularenigma.MobHunt.events.OnHunterJoin;
 import com.modularenigma.MobHunt.events.OnMobKill;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,6 +48,7 @@ public class MobHuntMain extends JavaPlugin {
         Objects.requireNonNull(getCommand("mobstats")).setExecutor(new mobstats(this, hunterController));
         Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
         Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
+        Objects.requireNonNull(getCommand("mobhelp")).setExecutor(new mobhelp(hunterController));
 
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
@@ -88,5 +91,9 @@ public class MobHuntMain extends JavaPlugin {
         }
         establishConnection();
         return connection;
+    }
+
+    public boolean isSenderAdmin(CommandSender sender) {
+        return sender.hasPermission(config().getAdminRole()) || sender.isOp();
     }
 }

@@ -25,6 +25,8 @@ public class PluginConfig {
     @Getter private boolean featureOnNewHunterConsoleMessageEnabled;
     @Getter private boolean featureMilestoneMessageEnabled;
 
+    @Getter private int killCap;
+
     @Getter private Sound soundMinorCollectionMilestone;
     @Getter private Sound soundMajorCollectionMilestone;
 
@@ -35,15 +37,19 @@ public class PluginConfig {
     @Getter private String langOnMobClear;
     @Getter private String langNotAPlayer;
     @Getter private String langInsufficientPermissions;
-    @Getter private String langStatsHeader;
+    @Getter private String langStringIsNotAValidPlayer;
+    @Getter private String langStatsTitle;
     @Getter private String langStatsFormat;
+    @Getter private List<String> langMobHelp;
     @Getter private List<String> langNewHunter;
     @Getter private String langMobKilled;
     @Getter private String langMobKilledCapReached;
 
     @Getter private String langCollectionMilestoneReached;
 
+    @Getter private String langLeaderboardStringNotAMob;
     @Getter private String langLeaderboardHeader;
+    @Getter private String langLeaderboardMobTitleFormat;
     @Getter private String langLeaderboardNoMobsKilled;
     @Getter private String langLeaderboardFirstColor;
     @Getter private String langLeaderboardSecondColor;
@@ -75,6 +81,8 @@ public class PluginConfig {
         featureOnNewHunterConsoleMessageEnabled = config.getBoolean("Features.OnNewHunterConsoleMessage");
         featureMilestoneMessageEnabled = config.getBoolean("Features.MilestoneMessages");
 
+        killCap = config.getInt("MobHunt.KillCap");
+
         soundMinorCollectionMilestone = Sound.valueOf(config.getString("Sounds.MinorCollectionMilestone"));
         soundMajorCollectionMilestone = Sound.valueOf(config.getString("Sounds.MajorCollectionMilestone"));
 
@@ -91,16 +99,22 @@ public class PluginConfig {
         langOnMobClear =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.OnMobClear")));
         langNotAPlayer =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.NotAPlayer")));
         langInsufficientPermissions =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.InsufficientPermissions")));
-        langStatsHeader =                ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.Stats.Header")));
+        langStringIsNotAValidPlayer =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.StringIsNotAValidPlayer")));
+        langStatsTitle =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.Stats.Title")));
         langStatsFormat =                ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.Stats.Format")));
+        langMobHelp = new ArrayList<>();
+        for (String s : config.getStringList("Lang.Command.Help"))
+            langMobHelp.add(ChatColor.translateAlternateColorCodes('&', s));
         langNewHunter = new ArrayList<>();
         for (String s : config.getStringList("Lang.MobHunt.NewHunter"))
             langNewHunter.add(ChatColor.translateAlternateColorCodes('&', s));
         langMobKilled =                  ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.Kill")));
         langMobKilledCapReached =        ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.CapReached")));
         langCollectionMilestoneReached = ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.MobHunt.CollectionMilestoneReached")));
+        langLeaderboardStringNotAMob =   ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.StringNotAMob")));
         langLeaderboardHeader =          ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.Header")));
-        langLeaderboardNoMobsKilled =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.NoHeadsFound")));
+        langLeaderboardMobTitleFormat =  ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.MobTitleFormat")));
+        langLeaderboardNoMobsKilled =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.NoMobsKilled")));
         langLeaderboardFirstColor =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.FirstColor")));
         langLeaderboardSecondColor =     ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.SecondColor")));
         langLeaderboardThirdColor =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Leaderboard.ThirdColor")));
@@ -112,7 +126,9 @@ public class PluginConfig {
             langScoreboardContent.add(ChatColor.translateAlternateColorCodes('&', s));
     }
 
-    public int getMobPoints(String mobType) {
-        return config.getInt("MobHunt.Points." + mobType);
+    public Integer getMobPoints(String mobType) {
+        if (config.isInt("MobHunt.Points." + mobType))
+            return config.getInt("MobHunt.Points." + mobType);
+        return null;
     }
 }

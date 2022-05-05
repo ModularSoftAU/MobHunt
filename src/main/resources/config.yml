@@ -11,6 +11,7 @@ Features:
   OnNewHunterConsoleMessage: true
   MilestoneMessages: true
 MobHunt:
+  KillCap: 50
   Points:
     # It is important these line up 1 to 1 with
     # their corresponding Minecraft Entity names.
@@ -104,26 +105,38 @@ Lang:
     OnMobClear: "All points have been cleared from %Player%."
     NotAPlayer: "&cYou must be a player to run this command."
     InsufficientPermissions: "&cYou do not have permission to use this command."
+    StringIsNotAValidPlayer: "&cThat player does not have a MobHunt profile."
     Stats:
-      Header: "%Player% MobHunt Statistics"
-      Format: "%MobType%: %Kills%"
+      Title: "&e%Player%'s&r stats"
+      Format: "%MobType% &7- %Kills%"
+    Help:
+      - "Killing Mobs rewards &5points&r, but sebsequent kills of the same Mob
+        will yield less points until a threshold is met. Once the threshold is
+        met, no more points are awarded for that Mob."
+      - "The best hunters will both, &ekill in quantity&r, and journey far and
+        wide to &ehunt down the rarest Mobs&r with extreme prejudice."
+    Kill: "You killed a %MobType% for %Points% point%Plural%."
   MobHunt:
     NewHunter:
-      - "%Player%"
-      - "bruh"
-      - "bruh"
-      - "bruh"
-      - "bruh"
-      - "bruh"
+      - "&l&2Welcome StryderEpic991 to the Mob Hunt."
+      - "Killing Mobs rewards &5points&r, but sebsequent kills of the same Mob will yield less points."
+      - "The best hunters will both, &ekill in quantity&r, and journey far and wide to &ehunt down the rarest Mobs&r with extreme prejudice."
+      - ""
+      - "&6Happy hunting"
+      - "&6From Crafting For Christ&r"
     Kill: "You killed a %MobType% for %Points% point%Plural%."
-    CapReached: "You killed a %MobType% but have reached the cap %Kills%/%Cap%."
+    CapReached: "You have reached the kill cap of %Cap% for %MobType%s.
+      Points will not be awarded for killing this mob, but stats tracking
+      will remain active."
     CollectionMilestoneReached: "&e&l%Player% &5has surpassed %Points% points!"
   Leaderboard:
+    StringNotAMob: "&cThat is not a valid Mob."
     # You can change the length of the header to change where the "centre" is for
     # the rest of the leaderboard. Keep the line below for reference:
     # Chat box width: "&l============================================="
     Header: "&l============================================="
-    NoHeadsFound: "&lNo one has killed a mob"
+    MobTitleFormat: "Top %MobType% hunters by kills"
+    NoMobsKilled: "&lNo hunters"
     FirstColor: "&e"
     SecondColor: "&7"
     ThirdColor: "&6"

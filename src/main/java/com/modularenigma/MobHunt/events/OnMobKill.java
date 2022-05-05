@@ -26,26 +26,35 @@ public class OnMobKill implements Listener {
     @EventHandler
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity deadEntity = event.getEntity();
+        String mobType = deadEntity.getName();
         Player player = deadEntity.getKiller();
         if (player == null)
             return;
 
-        String mobType = deadEntity.getName();
-
-        int mobsKilledCap = 50;
         MobHuntQuery.incrementKilledMob(plugin, player, mobType);
 
         int killedMobs = MobHuntQuery.killedMobTypeCount(plugin, player, mobType);
-        if (killedMobs > mobsKilledCap) {
-            hunterController.mobKilledCapReachedResponse(player, mobType, killedMobs, mobsKilledCap);
+        int killCap = plugin.config().getKillCap();
+        if (killedMobs == killCap) {
+            hunterController.mobKilledCapReachedResponse(player, mobType, killedMobs, killCap);
+            return;
+        } else if (killedMobs > killCap) {
             return;
         }
 
-        // (1 - log_n(killedMobs)) * points
-        // Where n = mobKilledCap + 1
-        // https://www.geogebra.org/classic/zjfdf79t
+        // Visually: https://www.geogebra.org/classic/zjfdf79t
+        //
+        // (1 - log_n(killedMobs)) * points     st. n == killCap + 1
+        //
+        //  OR
+        //
+        // sqrt(2 - 2^((killedMobs - 1) / killCap)) * points
+        //
+        // This is more forgiving when killing the same enemy, right until you get
+        // near the killCap, then it drops off quickly. Need to ensure x <= killCap
+        // or the sqrt will have a negative number.
         int basePoints = plugin.config().getMobPoints(mobType);
-        double intermedium = Math.log(killedMobs) / Math.log(mobsKilledCap + 1);
+        double intermedium = Math.log(killedMobs) / Math.log(killCap + 1);
         int calculatedPoints = (int) Math.max(0, Math.ceil((1 - intermedium) * basePoints));
 
         // Used for Milestones.
@@ -56,7 +65,6 @@ public class OnMobKill implements Listener {
         hunterController.mobKilledResponse(player, mobType, calculatedPoints);
         scoreboardController.reloadScoreboard(player, newPoints);
 
-        // TODO: Include a milestone trigger if it is relevant.
         List<CollectionMilestone> milestones = plugin.config().getCollectionMilestones();
         for (int i = 0; i < milestones.size() - 1; i++) {
             CollectionMilestone curr = milestones.get(i);

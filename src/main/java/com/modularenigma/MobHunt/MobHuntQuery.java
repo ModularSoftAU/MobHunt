@@ -1,6 +1,7 @@
 package com.modularenigma.MobHunt;
 
 import lombok.Getter;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.PreparedStatement;
@@ -8,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MobHuntQuery {
     public record MobHunter(@Getter String name, @Getter int points) { }
@@ -43,14 +45,25 @@ public class MobHuntQuery {
      * @return Returns the number of eggs found by the player
      */
     public static List<MobStat> killedMobStats(MobHuntMain plugin, Player player) {
+        return killedMobStats(plugin, player, player.getUniqueId());
+    }
+
+    /**
+     * @param plugin The EasterEggHunt main plugin
+     * @param sender The sender to send error messages to
+     * @param playerUUID The player's uuid to retrieve the stats of
+     * @return The MobHunt statistics of the player
+     */
+    public static List<MobStat> killedMobStats(MobHuntMain plugin, CommandSender sender, UUID playerUUID) {
         List<MobStat> mobStats = new ArrayList<>();
-        String playerUUID = "" + player.getUniqueId();
 
         try {
             // Check how many eggs the player has collected.
             PreparedStatement foundEggsCount = plugin.getConnection().prepareStatement(
-                    "SELECT mobType, mobsKilled FROM mobs WHERE uuid=? ORDER BY mobType");
-            foundEggsCount.setString(1, playerUUID);
+                "SELECT mobType, mobsKilled FROM mobs " +
+                        "WHERE uuid=? " +
+                        "ORDER BY mobsKilled DESC");
+            foundEggsCount.setString(1, "" + playerUUID);
             ResultSet results = foundEggsCount.executeQuery();
 
             while (results.next())
@@ -59,7 +72,7 @@ public class MobHuntQuery {
             return mobStats;
         } catch (SQLException e) {
             e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+            sender.sendMessage(plugin.config().getLangDatabaseConnectionError());
         }
         return mobStats;
     }
@@ -106,22 +119,30 @@ public class MobHuntQuery {
      * @return Returns true if the clear was successful.
      */
     public static boolean clearMobs(MobHuntMain plugin, Player player) {
-        String playerUUID = "" + player.getUniqueId();
+        return clearMobs(plugin, player, player.getUniqueId());
+    }
 
+    /**
+     * @param plugin The EasterEggHunt main plugin
+     * @param sender The sender to send error messages to
+     * @param playerUUID The player's uuid to clear the stats from
+     * @return Returns true if the clear was successful.
+     */
+    public static boolean clearMobs(MobHuntMain plugin, CommandSender sender, UUID playerUUID) {
         try {
             PreparedStatement clearEggsStatement = plugin.getConnection().prepareStatement(
                     "DELETE FROM mobs WHERE uuid=?");
-            clearEggsStatement.setString(1, playerUUID);
+            clearEggsStatement.setString(1, "" + playerUUID);
             clearEggsStatement.executeUpdate();
 
             PreparedStatement clearPointsStatement = plugin.getConnection().prepareStatement(
                     "UPDATE points SET n = 0 WHERE uuid=?");
-            clearPointsStatement.setString(1, playerUUID);
+            clearPointsStatement.setString(1, "" + playerUUID);
             clearPointsStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+            sender.sendMessage(plugin.config().getLangDatabaseConnectionError());
         }
         return false;
     }
@@ -131,9 +152,8 @@ public class MobHuntQuery {
      * @param plugin The MobHunt main plugin
      * @param player The player who found the egg
      * @param mobType The type of mob that was killed
-     * @return The number of mobs killed
      */
-    public static int incrementKilledMob(MobHuntMain plugin, Player player, String mobType) {
+    public static void incrementKilledMob(MobHuntMain plugin, Player player, String mobType) {
         String playerUUID = "" + player.getUniqueId();
 
         try {
@@ -146,26 +166,22 @@ public class MobHuntQuery {
 
             // The player already exists
             if (results.next()) {
-                int nextKilled = results.getInt(1) + 1;
                 PreparedStatement updateMobCount = plugin.getConnection().prepareStatement(
                         "UPDATE mobs SET mobsKilled = mobsKilled + 1 WHERE uuid=? AND mobType=?");
                 updateMobCount.setString(1, playerUUID);
                 updateMobCount.setString(2, mobType);
                 updateMobCount.executeUpdate();
-                return nextKilled;
             } else {
                 PreparedStatement insertMobCount = plugin.getConnection().prepareStatement(
                         "INSERT INTO mobs (uuid, mobType) VALUES (?, ?)");
                 insertMobCount.setString(1, playerUUID);
                 insertMobCount.setString(2, mobType);
                 insertMobCount.executeUpdate();
-                return 1;
             }
         } catch (SQLException e) {
             e.printStackTrace();
             player.sendMessage(plugin.config().getLangDatabaseConnectionError());
         }
-        return 0;
     }
 
     /**
@@ -210,13 +226,13 @@ public class MobHuntQuery {
         List<MobHunter> bestHunters = new ArrayList<>();
 
         try {
-            // Check if a player has been added into the database already.
             PreparedStatement bestHuntersStatement = plugin.getConnection().prepareStatement(
-                    "SELECT username, n FROM points ORDER BY n DESC LIMIT ?");
+                "SELECT username, n FROM points " +
+                        "ORDER BY n DESC " +
+                        "LIMIT ?");
             bestHuntersStatement.setInt(1, topHunters);
             ResultSet results = bestHuntersStatement.executeQuery();
 
-            // The player already exists
             while (results.next()) {
                 String name = results.getString(1);
                 int points = results.getInt(2);
@@ -227,5 +243,31 @@ public class MobHuntQuery {
             player.sendMessage(plugin.config().getLangDatabaseConnectionError());
         }
         return bestHunters;
+    }
+
+    public static List<MobHunter> getBestMobTypeHunters(MobHuntMain plugin, Player player, int topHunters, String mobType) {
+        List<MobHunter> bestMobTypeHunters = new ArrayList<>();
+
+        try {
+            PreparedStatement bestHuntersWithMobsStatement = plugin.getConnection().prepareStatement(
+                "SELECT p.username, m.mobsKilled FROM mobs m " +
+                        "JOIN points p ON m.uuid = p.uuid " +
+                        "WHERE m.mobType = ? " +
+                        "ORDER BY m.mobsKilled DESC " +
+                        "LIMIT ?");
+            bestHuntersWithMobsStatement.setString(1, mobType);
+            bestHuntersWithMobsStatement.setInt(2, topHunters);
+            ResultSet results = bestHuntersWithMobsStatement.executeQuery();
+
+            while (results.next()) {
+                String name = results.getString(1);
+                int points = results.getInt(2);
+                bestMobTypeHunters.add(new MobHunter(name, points));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+        }
+        return bestMobTypeHunters;
     }
 }
