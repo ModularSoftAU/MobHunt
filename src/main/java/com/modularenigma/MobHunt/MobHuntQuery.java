@@ -16,16 +16,18 @@ public class MobHuntQuery {
     public record MobStat(@Getter String mobType, @Getter int mobsKilled) { }
 
     /**
-     * @param plugin The MobHuntMain main plugin
-     * @param player The player to check
-     * @return Returns the number of eggs found by the player
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player to check.
+     * @param mobType The mobType to check.
+     * @return The number of kills player has got of mobType.
      */
     public static int killedMobTypeCount(MobHuntMain plugin, Player player, String mobType) {
         String playerUUID = "" + player.getUniqueId();
 
         try {
             PreparedStatement mobsKilledStatement = plugin.getConnection().prepareStatement(
-                    "SELECT mobsKilled FROM mobs WHERE uuid=? AND mobType=?");
+                "SELECT mobsKilled FROM mobs " +
+                        "WHERE uuid=? AND mobType=?");
             mobsKilledStatement.setString(1, playerUUID);
             mobsKilledStatement.setString(2, mobType);
             ResultSet results = mobsKilledStatement.executeQuery();
@@ -40,36 +42,34 @@ public class MobHuntQuery {
     }
 
     /**
-     * @param plugin The EasterEggHunt main plugin
-     * @param player The player to check
-     * @return Returns the number of eggs found by the player
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player to check.
+     * @return The MobHunt statistics of the player.
      */
     public static List<MobStat> killedMobStats(MobHuntMain plugin, Player player) {
         return killedMobStats(plugin, player, player.getUniqueId());
     }
 
     /**
-     * @param plugin The EasterEggHunt main plugin
-     * @param sender The sender to send error messages to
+     * @param plugin The MobHuntMain main plugin.
+     * @param sender he sender to send error messages to
      * @param playerUUID The player's uuid to retrieve the stats of
-     * @return The MobHunt statistics of the player
+     * @return The MobHunt statistics of the player.
      */
     public static List<MobStat> killedMobStats(MobHuntMain plugin, CommandSender sender, UUID playerUUID) {
         List<MobStat> mobStats = new ArrayList<>();
 
         try {
-            // Check how many eggs the player has collected.
-            PreparedStatement foundEggsCount = plugin.getConnection().prepareStatement(
+            PreparedStatement mobStatsStatement = plugin.getConnection().prepareStatement(
                 "SELECT mobType, mobsKilled FROM mobs " +
                         "WHERE uuid=? " +
                         "ORDER BY mobsKilled DESC");
-            foundEggsCount.setString(1, "" + playerUUID);
-            ResultSet results = foundEggsCount.executeQuery();
+            mobStatsStatement.setString(1, "" + playerUUID);
+            ResultSet results = mobStatsStatement.executeQuery();
 
             while (results.next())
                 mobStats.add(new MobStat(results.getString(1),
                                          results.getInt(2)));
-            return mobStats;
         } catch (SQLException e) {
             e.printStackTrace();
             sender.sendMessage(plugin.config().getLangDatabaseConnectionError());
@@ -77,15 +77,18 @@ public class MobHuntQuery {
         return mobStats;
     }
 
+    /**
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player to check.
+     * @return The number of points the player has.
+     */
     public static int getPoints(MobHuntMain plugin, Player player) {
-        String playerUUID = "" + player.getUniqueId();
-
         try {
-            // Check how many eggs the player has collected.
-            PreparedStatement getPoints = plugin.getConnection().prepareStatement(
-                    "SELECT n FROM points WHERE uuid=?");
-            getPoints.setString(1, playerUUID);
-            ResultSet results = getPoints.executeQuery();
+            PreparedStatement pointsStatement = plugin.getConnection().prepareStatement(
+                "SELECT n FROM points " +
+                        "WHERE uuid=?");
+            pointsStatement.setString(1, "" + player.getUniqueId());
+            ResultSet results = pointsStatement.executeQuery();
 
             if (results.next())
                 return results.getInt(1);
@@ -96,16 +99,19 @@ public class MobHuntQuery {
         return 0;
     }
 
+    /**
+     * Adds points to the players score.
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player to give points
+     * @param points The number of points to give.
+     */
     public static void addPoints(MobHuntMain plugin, Player player, int points) {
-        String playerUUID = "" + player.getUniqueId();
-
         try {
-            // Check how many eggs the player has collected.
-            PreparedStatement getPoints = plugin.getConnection().prepareStatement(
+            PreparedStatement addPointsStatement = plugin.getConnection().prepareStatement(
                     "UPDATE points SET n = n + ? WHERE uuid=?");
-            getPoints.setInt(1, points);
-            getPoints.setString(2, playerUUID);
-            getPoints.executeUpdate();
+            addPointsStatement.setInt(1, points);
+            addPointsStatement.setString(2, "" + player.getUniqueId());
+            addPointsStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
             player.sendMessage(plugin.config().getLangDatabaseConnectionError());
@@ -113,9 +119,9 @@ public class MobHuntQuery {
     }
 
     /**
-     * Clears the number of eggs found by the player to 0
-     * @param plugin The EasterEggHunt main plugin
-     * @param player The player to reset
+     * Clears all the mobs killed of the player to 0
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player to clear.
      * @return Returns true if the clear was successful.
      */
     public static boolean clearMobs(MobHuntMain plugin, Player player) {
@@ -123,17 +129,17 @@ public class MobHuntQuery {
     }
 
     /**
-     * @param plugin The EasterEggHunt main plugin
-     * @param sender The sender to send error messages to
-     * @param playerUUID The player's uuid to clear the stats from
+     * @param plugin The MobHuntMain main plugin.
+     * @param sender The sender to send error messages to.
+     * @param playerUUID The player's uuid to clear the stats from.
      * @return Returns true if the clear was successful.
      */
     public static boolean clearMobs(MobHuntMain plugin, CommandSender sender, UUID playerUUID) {
         try {
-            PreparedStatement clearEggsStatement = plugin.getConnection().prepareStatement(
+            PreparedStatement clearMobsStatement = plugin.getConnection().prepareStatement(
                     "DELETE FROM mobs WHERE uuid=?");
-            clearEggsStatement.setString(1, "" + playerUUID);
-            clearEggsStatement.executeUpdate();
+            clearMobsStatement.setString(1, "" + playerUUID);
+            clearMobsStatement.executeUpdate();
 
             PreparedStatement clearPointsStatement = plugin.getConnection().prepareStatement(
                     "UPDATE points SET n = 0 WHERE uuid=?");
@@ -148,10 +154,10 @@ public class MobHuntQuery {
     }
 
     /**
-     * Insert killed mob into database
-     * @param plugin The MobHunt main plugin
-     * @param player The player who found the egg
-     * @param mobType The type of mob that was killed
+     * Increment the number of killed mobType mobs a player has.
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player who killed the mob.
+     * @param mobType The mobType the player killed.
      */
     public static void incrementKilledMob(MobHuntMain plugin, Player player, String mobType) {
         String playerUUID = "" + player.getUniqueId();
@@ -159,24 +165,25 @@ public class MobHuntQuery {
         try {
             // Check if a player has been added into the database already.
             PreparedStatement findStatement = plugin.getConnection().prepareStatement(
-                    "SELECT mobsKilled FROM mobs WHERE uuid=? AND mobType=?");
+                "SELECT mobsKilled FROM mobs " +
+                        "WHERE uuid=? AND mobType=?");
             findStatement.setString(1, playerUUID);
             findStatement.setString(2, mobType);
             ResultSet results = findStatement.executeQuery();
 
             // The player already exists
             if (results.next()) {
-                PreparedStatement updateMobCount = plugin.getConnection().prepareStatement(
+                PreparedStatement updateMobsKilled = plugin.getConnection().prepareStatement(
                         "UPDATE mobs SET mobsKilled = mobsKilled + 1 WHERE uuid=? AND mobType=?");
-                updateMobCount.setString(1, playerUUID);
-                updateMobCount.setString(2, mobType);
-                updateMobCount.executeUpdate();
+                updateMobsKilled.setString(1, playerUUID);
+                updateMobsKilled.setString(2, mobType);
+                updateMobsKilled.executeUpdate();
             } else {
-                PreparedStatement insertMobCount = plugin.getConnection().prepareStatement(
+                PreparedStatement insertMobsKilled = plugin.getConnection().prepareStatement(
                         "INSERT INTO mobs (uuid, mobType) VALUES (?, ?)");
-                insertMobCount.setString(1, playerUUID);
-                insertMobCount.setString(2, mobType);
-                insertMobCount.executeUpdate();
+                insertMobsKilled.setString(1, playerUUID);
+                insertMobsKilled.setString(2, mobType);
+                insertMobsKilled.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -185,20 +192,20 @@ public class MobHuntQuery {
     }
 
     /**
-     * @param plugin The EasterEggHunt main plugin
-     * @param player The player who joined
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player who joined.
      * @return Returns true if the player specified was indeed a new player.
      */
     public static boolean addNewHunter(MobHuntMain plugin, Player player) {
         String playerUUID = "" + player.getUniqueId();
-        String username = player.getName();
 
         try {
             // Check if a player has been added into the database already.
-            PreparedStatement findstatement = plugin.getConnection().prepareStatement(
-                    "SELECT * FROM points WHERE uuid=?");
-            findstatement.setString(1, playerUUID);
-            ResultSet results = findstatement.executeQuery();
+            PreparedStatement findStatement = plugin.getConnection().prepareStatement(
+                "SELECT * FROM points " +
+                        "WHERE uuid=?");
+            findStatement.setString(1, playerUUID);
+            ResultSet results = findStatement.executeQuery();
 
             // The player already exists
             if (results.next())
@@ -207,7 +214,7 @@ public class MobHuntQuery {
             PreparedStatement newPlayerStatement = plugin.getConnection().prepareStatement(
                     "INSERT INTO points (uuid, username) VALUES (?, ?)");
             newPlayerStatement.setString(1, playerUUID);
-            newPlayerStatement.setString(2, username);
+            newPlayerStatement.setString(2, player.getName());
             newPlayerStatement.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -218,9 +225,10 @@ public class MobHuntQuery {
     }
 
     /**
-     * @param plugin The EasterEggHunt main plugin
-     * @param player The player who issued the command
-     * @return Returns a list of the Best Hunters. idx 0 is the best player and so on...
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player who issued the command.
+     * @param topHunters The limit of the size of the hunters list.
+     * @return Returns a list of the Best Hunters. Index 0 is the best player and so on...
      */
     public static List<MobHunter> getBestHunters(MobHuntMain plugin, Player player, int topHunters) {
         List<MobHunter> bestHunters = new ArrayList<>();
@@ -245,6 +253,13 @@ public class MobHuntQuery {
         return bestHunters;
     }
 
+    /**
+     * @param plugin The MobHuntMain main plugin.
+     * @param player The player who issued the command.
+     * @param topHunters The limit of the size of the hunters list.
+     * @param mobType The mobType to specifically query for.
+     * @return Returns a list of the Best Hunters. Index 0 is the best player and so on...
+     */
     public static List<MobHunter> getBestMobTypeHunters(MobHuntMain plugin, Player player, int topHunters, String mobType) {
         List<MobHunter> bestMobTypeHunters = new ArrayList<>();
 

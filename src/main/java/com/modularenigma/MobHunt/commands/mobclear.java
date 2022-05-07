@@ -29,30 +29,37 @@ public class mobclear implements CommandExecutor {
             return true;
         }
 
+        // Only an admin can use this command.
         if (!plugin.isSenderAdmin(sender)) {
             sender.sendMessage(plugin.config().getLangInsufficientPermissions());
             return true;
         }
 
+        // If another argument is present, clear the stats of another player.
+        // By using OfflinePlater, we can remove the stats of a player who is not
+        // currently online.
         if (args.length > 0) {
+            // Check to see if the player has logged in before.
             OfflinePlayer toClear = Bukkit.getServer().getOfflinePlayerIfCached(args[0]);
             if (toClear == null) {
                 sender.sendMessage(plugin.config().getLangStringIsNotAValidPlayer());
                 return true;
             }
 
-            if (MobHuntQuery.clearMobs(plugin, player, toClear.getUniqueId())) {
+            // Clear the offlinePlayers stats
+            if (MobHuntQuery.clearMobs(plugin, sender, toClear.getUniqueId())) {
                 hunterController.playerClearedTheirPointsResponse(sender, toClear.getName());
 
+                // If the player is also online, reload their scoreboard.
                 Player onlinePlayer = toClear.getPlayer();
                 if (onlinePlayer != null)
                     scoreboardController.reloadScoreboard(onlinePlayer, MobHuntQuery.getPoints(plugin, onlinePlayer));
             }
         } else if (MobHuntQuery.clearMobs(plugin, player)) {
+            // This is for clearing your own points.
             hunterController.playerClearedTheirPointsResponse(player);
             scoreboardController.reloadScoreboard(player, MobHuntQuery.getPoints(plugin, player));
         }
-
         return true;
     }
 }

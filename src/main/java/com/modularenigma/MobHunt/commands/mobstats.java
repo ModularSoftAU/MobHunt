@@ -29,6 +29,9 @@ public class mobstats implements CommandExecutor {
             return true;
         }
 
+        // If another argument is present, then the player is trying to see the kill breakdown
+        // of another player. Seeing your own stats is allowed, but seeing other people's stats
+        // is only possible as an admin.
         List<MobHuntQuery.MobStat> stats;
         if (args.length > 0) {
             if (!plugin.isSenderAdmin(sender)) {
@@ -36,6 +39,7 @@ public class mobstats implements CommandExecutor {
                 return true;
             }
 
+            // Lets us see the statistics of a player even if they are offline.
             OfflinePlayer playerToCheck = Bukkit.getServer().getOfflinePlayerIfCached(args[0]);
             if (playerToCheck == null) {
                 sender.sendMessage(plugin.config().getLangStringIsNotAValidPlayer());
@@ -44,10 +48,11 @@ public class mobstats implements CommandExecutor {
 
             stats = MobHuntQuery.killedMobStats(plugin, sender, playerToCheck.getUniqueId());
         } else {
+            // See our own stats.
             stats = MobHuntQuery.killedMobStats(plugin, player);
         }
 
-        hunterController.mobCountResponse(player, stats);
+        hunterController.mobStatsResponse(player, stats);
         return true;
     }
 

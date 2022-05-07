@@ -17,7 +17,7 @@ public class ScoreboardController {
     public void reloadScoreboard(Player player, int points) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
-        Objective objective = board.registerNewObjective("PlayerHeadScoreboard", "dummy", Component.text(plugin.config().getLangScoreboardTitle()));
+        Objective objective = board.registerNewObjective("MobHuntScoreboard", "dummy", Component.text(plugin.config().getLangScoreboardTitle()));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         List<String> scoreboardContent = plugin.config().getLangScoreboardContent();

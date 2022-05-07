@@ -28,19 +28,31 @@ public class mobleaderboard implements CommandExecutor {
         }
 
         int showPlayers = plugin.config().getLeaderboardShowPlayers();
+
+        // If another argument is present, then we assume this command is asking for the
+        // leaderboard of a specific Mob Type.
         if (args.length > 0) {
+            // Since many Mob Types have a space in them (eg. Ender Dragon), we first
+            // combine the arguments into one string.
             String mobType = String.join(" ", args);
+
+            // This is a quick and dirty hack to check if the Mob Exists by looking to
+            // see if its points are defined the config.
             if (plugin.config().getMobPoints(mobType) == null) {
                 player.sendMessage(plugin.config().getLangLeaderboardStringNotAMob());
                 return true;
             }
 
+            // Get the best hunters by mobType.
             List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestMobTypeHunters(
                     plugin, player, showPlayers, mobType);
+
+            // Show the leaderboard with a specific title.
             String leaderboardTitle = plugin.config().getLangLeaderboardMobTitleFormat()
                     .replace("%MobType%", mobType);
             hunterController.showLeaderBoardResponse(player, bestHunters, leaderboardTitle);
         } else {
+            // This is for seeing the overall leaderboard for points.
             List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestHunters(
                     plugin, player, showPlayers);
             hunterController.showLeaderBoardResponse(player, bestHunters);

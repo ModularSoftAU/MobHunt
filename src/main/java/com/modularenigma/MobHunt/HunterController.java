@@ -15,6 +15,12 @@ public class HunterController {
         this.plugin = plugin;
     }
 
+    /**
+     * For when the player kills a Mob.
+     * @param player The player who killed the mob.
+     * @param mobType The mobType the player killed.
+     * @param points The number of points awarded for killing the mob.
+     */
     public void mobKilledResponse(Player player, String mobType, int points) {
         player.sendMessage(plugin.config().getLangMobKilled()
                 .replace("%MobType%", mobType)
@@ -22,14 +28,28 @@ public class HunterController {
                 .replace("%Plural%", points == 1 ? "" : "s"));
     }
 
-    public void mobKilledCapReachedResponse(Player player, String mobType, int kills, int cap) {
+    /**
+     * For when the player has killed cap number of mobType mobs. This notifies
+     * the player that they will no longer receive points for killing mobType
+     * @param player The player who killed the mob
+     * @param mobType The mobType the player killed
+     * @param kills The number of kills the player has gotten for said mobtype
+     * @param killCap The killCap threshold
+     */
+    public void mobKilledCapReachedResponse(Player player, String mobType, int kills, int killCap) {
         player.sendMessage(plugin.config().getLangMobKilledCapReached()
                 .replace("%MobType%", mobType)
                 .replace("%Kills%", "" + kills)
-                .replace("%Cap%", "" + cap));
+                .replace("%Cap%", "" + killCap));
     }
 
-    public void mobCountResponse(Player player, List<MobHuntQuery.MobStat> stats) {
+    /**
+     * For when the player wants to see a breakdown of the kills they have gotten
+     * across all the mobs.
+     * @param player The player to send the stats to.
+     * @param stats A (presorted) list of of stats to render.
+     */
+    public void mobStatsResponse(Player player, List<MobHuntQuery.MobStat> stats) {
         int centrePixel = minecraftMessageLengthInPixels(
                 plugin.config().getLangLeaderboardHeader()) / 2;
 
@@ -46,12 +66,26 @@ public class HunterController {
         }
     }
 
+    /**
+     * For when a player wants to see the rules of MobHunt.
+     * @param sender The sender to tell the rules to.
+     */
     public void mobHelpResponse(CommandSender sender) {
         for (String s : plugin.config().getLangMobHelp())
             sender.sendMessage(s);
     }
 
-    public void collectionMilestoneReachedResponse(Player player, boolean isMajorSound, int points) {
+    /**
+     * For when a player reaches a points Milestone. This tells other people in
+     * the world when the player reaches a Milestone. If it is a Major Milestone,
+     * then the sound changes, but other players will only hear the minor milestone
+     * sound. They will only hear the sound if they are closeby to the player who
+     * achieved the Milestone.
+     * @param player The player who achieved the Milestone.
+     * @param isMajorSound Whether the player surpasssed a Major Milestone or not.
+     * @param milestonePoints The number of points associated with the Milestone.
+     */
+    public void collectionMilestoneReachedResponse(Player player, boolean isMajorSound, int milestonePoints) {
         if (!plugin.config().isFeatureMilestoneMessageEnabled())
             return;
 
@@ -68,10 +102,9 @@ public class HunterController {
         // Tell other players about the milestone
         String broadcastMessage = plugin.config().getLangCollectionMilestoneReached()
                 .replace("%Player%", player.getName())
-                .replace("%Points%", "" + points);
+                .replace("%Points%", "" + milestonePoints);
 
-        // TODO: Consider adding a local notification for a player killing their first
-        //       mob. Revise and test this. Other players should be able to hear the
+        // TODO: Revise and test this. Other players should be able to hear the
         //       milestone. If not, then this needs to change AND the PlayerHeadHunt
         //       plugin code.
         player.getWorld().playSound(player.getLocation(), minorSound, 1, 1);
@@ -80,7 +113,7 @@ public class HunterController {
     }
 
     /**
-     * When a new player joins.
+     * When a new player joins tell them the rules.
      * @param player The player who joined.
      */
     public void newPlayerJoinsTheHunt(Player player) {
@@ -88,10 +121,21 @@ public class HunterController {
             player.sendMessage(s.replace("%Player%", player.getName()));
     }
 
+    /**
+     * When a player clears their own points.
+     * @param player The player who cleared their own points.
+     */
     public void playerClearedTheirPointsResponse(Player player) {
         playerClearedTheirPointsResponse(player, player.getName());
     }
 
+    /**
+     * When a sender wants to clear the points of another player silently,
+     * they would call this function. Only the sender is notified of the
+     * clear.
+     * @param messageRecipient The person to send the cleared message to.
+     * @param aboutPlayerName The player whose points were cleared.
+     */
     public void playerClearedTheirPointsResponse(CommandSender messageRecipient, String aboutPlayerName) {
         messageRecipient.sendMessage(plugin.config().getLangOnMobClear()
                 .replace("%Player%", aboutPlayerName));
@@ -100,8 +144,8 @@ public class HunterController {
     /**
      * From: https://stackoverflow.com/a/6810409
      * This function converts a rank to its ordinal representation
-     * @param rank Rank to convert to ordinal
-     * @return The oridinal String
+     * @param rank Rank to convert to ordinal.
+     * @return The oridinal String.
      */
     private static String rankToOrdinal(int rank) {
         String[] suffixes = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
@@ -113,8 +157,8 @@ public class HunterController {
 
     /**
      * From: https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/
-     * @param message The message to measure its length
-     * @return The length of the message in pixels (" " characters)
+     * @param message The message to measure its length.
+     * @return The length of the message in pixels (" " characters).
      */
     private static int minecraftMessageLengthInPixels(String message) {
         if (message == null || message.equals(""))
@@ -141,8 +185,8 @@ public class HunterController {
 
     /**
      * From: https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/
-     * @param pixels The number of pixels to pad
-     * @return The padded String
+     * @param pixels The number of pixels to pad.
+     * @return The padded String.
      */
     private static String getPixelPadding(int pixels) {
         StringBuilder sb = new StringBuilder();
@@ -158,9 +202,9 @@ public class HunterController {
     /**
      * From: https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/
      * Sends the message to the chat such that it is in the middle of the chat box.
-     * @param player The player sending the message
-     * @param message The message to send
-     * @param centrePixel The pixel to treat as the centre of the message
+     * @param player The player sending the message.
+     * @param message The message to send.
+     * @param centrePixel The pixel to treat as the centre of the message.
      */
     private static void sendMessageInCentre(Player player, String message, int centrePixel) {
         int messagePxSize = minecraftMessageLengthInPixels(message);
@@ -169,10 +213,21 @@ public class HunterController {
         player.sendMessage(getPixelPadding(toCompensate) + message);
     }
 
+    /**
+     * For when a player wants to see who the best hunters are.
+     * @param player The player who requested the leaderboard.
+     * @param bestHunters A (presorted) list of stats to show on the leaderboard.
+     */
     public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters) {
         showLeaderBoardResponse(player, bestHunters, null);
     }
 
+    /**
+     * When you want to see the leaderboard with a heading of a specific mob.
+     * @param player The player who requested the leaderboard.
+     * @param bestHunters A (presorted) list of stats to show on the leaderboard.
+     * @param title The title to give the leaderboard.
+     */
     public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters, String title) {
         int centrePixel = minecraftMessageLengthInPixels(
                 plugin.config().getLangLeaderboardHeader()) / 2;

@@ -26,7 +26,7 @@ public class OnHunterJoin implements Listener {
         Player player = event.getPlayer();
         String username = player.getName();
 
-        // Give the new player a scoreboard
+        // Refresh the scoreboard
         scoreboardController.reloadScoreboard(player, MobHuntQuery.getPoints(plugin, player));
 
         // Check if a new player has joined

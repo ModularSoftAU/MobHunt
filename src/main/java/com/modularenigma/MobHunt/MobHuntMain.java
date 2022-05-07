@@ -93,6 +93,12 @@ public class MobHuntMain extends JavaPlugin {
         return connection;
     }
 
+    /**
+     * Used for checking if a sender has admin rights (mainly to call
+     * restricted commands).
+     * @param sender The sender to check.
+     * @return True if the sender is an admin.
+     */
     public boolean isSenderAdmin(CommandSender sender) {
         return sender.hasPermission(config().getAdminRole()) || sender.isOp();
     }
