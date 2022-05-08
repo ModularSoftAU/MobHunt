@@ -1,0 +1,151 @@
+Database:
+  Host: "127.0.0.1"
+  Port: 3306
+  Name: "MobHunt"
+  Username: "root"
+  Password: "root"
+AdminRole: "mobhunt.admin"
+Features:
+  OnEnabledConsoleMessage: true
+  OnDisabledConsoleMessage: true
+  OnNewHunterConsoleMessage: true
+  MilestoneMessages: true
+MobHunt:
+  KillCap: 50
+  Points:
+    # It is important these line up 1 to 1 with
+    # their corresponding Minecraft Entity names.
+    Axolotl: 0
+    Bat: 2
+    Bee: 6
+    Blaze: 6
+    Cat: 2
+    Cave Spider: 6
+    Chicken: 1
+    Cod: 2
+    Cow: 1
+    Creeper: 4
+    Dolphin: 2
+    Donkey: 6
+    Drowned: 5
+    Elder Guardian: 20
+    Ender Dragon: 50
+    Enderman: 3
+    Endermite: 8
+    Evoker: 8
+    Fox: 3
+    Ghast: 6
+    Glow Squid: 6
+    Goat: 6
+    Guardian: 8
+    Hoglin: 8
+    Horse: 3
+    Husk: 6
+    Iron Golem: 7
+    Llama: 3
+    Magma Cube: 4
+    Mooshroom: 5
+    Mule: 6
+    Ocelot: 6
+    Panda: 5
+    Parrot: 6
+    Phantom: 6
+    Pig: 1
+    Piglin Brute: 10
+    Piglin: 4
+    Pillager: 8
+    Polar Bear: 4
+    Pufferfish: 3
+    Rabbit: 2
+    Ravager: 8
+    Salmon: 1
+    Sheep: 1
+    Shulker: 8
+    Silverfish: 3
+    Skeleton Horse: 12
+    Skeleton: 4
+    Slime: 6
+    Snow Golem: 3
+    Spider: 4
+    Squid: 2
+    Stray: 6
+    Strider: 8
+    Trader Llama: 4
+    Tropical Fish: 3
+    Turtle: 3
+    Vex: 10
+    Villager: 3
+    Vindicator: 8
+    Wandering Trader: 4
+    Witch: 6
+    Wither Skeleton: 6
+    Wither: 30
+    Wolf: 3
+    Zoglin: 15
+    Zombie Villager: 6
+    Zombie: 4
+    Zombified Piglin: 0
+Sounds:
+  MinorCollectionMilestone: ENTITY_PLAYER_LEVELUP
+  MajorCollectionMilestone: UI_TOAST_CHALLENGE_COMPLETE
+Milestones:
+  Messages:
+    Minor: [16, 32, 64, 96, 160, 192, 224]
+    Major: [128, 256]
+Leaderboard:
+  ShowPlayers: 5
+Lang:
+  # All Lang text is parsed through ChatColor.translateAlternateColorCodes with &
+  # as the altColorChat. This means that color can be encoded into the strings
+  # from here. Some strings also have variables replaced in them. If this is the
+  # case, it will be listed here.
+  Database:
+    ConnectionError: "&cA database error has occurred, please contact an Administrator."
+  Command:
+    OnMobClear: "All points have been cleared from %Player%."
+    NotAPlayer: "&cYou must be a player to run this command."
+    InsufficientPermissions: "&cYou do not have permission to use this command."
+    StringIsNotAValidPlayer: "&cThat player does not have a MobHunt profile."
+    Stats:
+      Title: "&e%Player%'s&r stats"
+      Format: "%MobType% &7- %Kills%"
+    Help:
+      - "Killing Mobs rewards &5points&r, but sebsequent kills of the same Mob
+        will yield less points until a threshold is met. Once the threshold is
+        met, no more points are awarded for that Mob."
+      - "The best hunters will both, &ekill in quantity&r, and journey far and
+        wide to &ehunt down the rarest Mobs&r with extreme prejudice."
+    Kill: "You killed a %MobType% for %Points% point%Plural%."
+  MobHunt:
+    NewHunter:
+      - "&l&2Welcome %Player% to the Mob Hunt."
+      - "Killing Mobs rewards &5points&r, but sebsequent kills of the same Mob will yield less points."
+      - "The best hunters will both, &ekill in quantity&r, and journey far and wide to &ehunt down the rarest Mobs&r with extreme prejudice."
+      - ""
+      - "&6Happy hunting"
+      - "&6From Crafting For Christ&r"
+    Kill: "You killed a %MobType% for %Points% point%Plural%."
+    CapReached: "You have reached the kill cap of %Cap% for %MobType%s.
+      Points will not be awarded for killing this mob, but stats tracking
+      will remain active."
+    CollectionMilestoneReached: "&e&l%Player% &5has surpassed %Points% points!"
+  Leaderboard:
+    StringNotAMob: "&cThat is not a valid Mob."
+    # You can change the length of the header to change where the "centre" is for
+    # the rest of the leaderboard. Keep the line below for reference:
+    # Chat box width: "&l============================================="
+    Header: "&l============================================="
+    MobTitleFormat: "Top %MobType% hunters by kills"
+    NoMobsKilled: "&lNo hunters"
+    FirstColor: "&e"
+    SecondColor: "&7"
+    ThirdColor: "&6"
+    OtherColor: ""
+    Format: "%Color%&l%Ranking%&r&f &7-&r %Player% &7- %Points%"
+  Scoreboard:
+    Title: Mob Hunt
+    Content:
+      - " "
+      - "&ecraftingforchrist.net"
+      - "&e&lPoints: &f%Points%"
+      - "  "

@@ -1,0 +1,22 @@
+main: com.modularenigma.MobHunt.MobHuntMain
+name: MobHunt
+description: Hunt as many mobs overall, or of a unique mob type.
+version: ${project.version}
+authors: [ModularEnigma]
+api-version: 1.18
+
+commands:
+  mobstats:
+    description: Shows a breakdown of the mobs you killed, or another player if you are an Admin.
+    usage: /mobstats [player]
+  mobclear:
+    description: Clear all mobs from yourself or another player.
+    usage: /mobclear [player]
+  mobleaderboard:
+    description: Show the Top 5 Mob Hunters overall or of a specific mob.
+    usage: /mobleaderboard [mob]
+    aliases: [lb, leaderboard]
+  mobhelp:
+    description: Helps the player know how to play MobHunt.
+    usage: /mobhelp
+    aliases: [howtoplay]

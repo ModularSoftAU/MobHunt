@@ -1,0 +1,23 @@
+DROP DATABASE IF EXISTS MobHunt;
+CREATE DATABASE IF NOT EXISTS MobHunt;
+USE MobHunt;
+
+CREATE USER IF NOT EXISTS 'MobHunt'@'%' IDENTIFIED WITH mysql_native_password BY 'PasswordMobHunt321';
+FLUSH PRIVILEGES;
+GRANT SELECT ON MobHunt.* TO MobHunt@'%';
+GRANT INSERT ON MobHunt.* TO MobHunt@'%';
+GRANT UPDATE ON MobHunt.* TO MobHunt@'%';
+GRANT DELETE ON MobHunt.* TO MobHunt@'%';
+
+CREATE TABLE mobs (
+  id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
+  uuid VARCHAR(36),
+  mobType VARCHAR(100) NOT NULL,
+  mobsKilled int DEFAULT 1
+);
+
+CREATE TABLE points (
+  uuid VARCHAR(36) PRIMARY KEY NOT NULL,
+  username VARCHAR(16),
+  n int DEFAULT 0
+);
