@@ -2,7 +2,7 @@ main: com.modularenigma.MobHunt.MobHuntMain
 name: MobHunt
 description: Hunt as many mobs overall, or of a unique mob type.
 version: ${project.version}
-authors: [Ben Robson, ModularEnigma]
+authors: [ModularEnigma]
 api-version: 1.18
 
 commands:
@@ -19,3 +19,4 @@ commands:
   mobhelp:
     description: Helps the player know how to play MobHunt.
     usage: /mobhelp
+    aliases: [howtoplay]

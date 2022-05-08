@@ -2,9 +2,9 @@ Database:
   Host: "127.0.0.1"
   Port: 3306
   Name: "MobHunt"
-  Username: "jaedanc"
-  Password: "applesTOapples123$%"
-AdminRole: "easteregghunt.clearegg"
+  Username: "root"
+  Password: "root"
+AdminRole: "mobhunt.admin"
 Features:
   OnEnabledConsoleMessage: true
   OnDisabledConsoleMessage: true
@@ -118,7 +118,7 @@ Lang:
     Kill: "You killed a %MobType% for %Points% point%Plural%."
   MobHunt:
     NewHunter:
-      - "&l&2Welcome StryderEpic991 to the Mob Hunt."
+      - "&l&2Welcome %Player% to the Mob Hunt."
       - "Killing Mobs rewards &5points&r, but sebsequent kills of the same Mob will yield less points."
       - "The best hunters will both, &ekill in quantity&r, and journey far and wide to &ehunt down the rarest Mobs&r with extreme prejudice."
       - ""
