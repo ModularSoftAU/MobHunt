@@ -5,6 +5,11 @@ Database:
   Username: "root"
   Password: "root"
 AdminRole: "mobhunt.admin"
+Hologram:
+  LocationWorld: world
+  LocationX: 228
+  LocationY: 73
+  LocationZ: 93
 Features:
   OnEnabledConsoleMessage: true
   OnDisabledConsoleMessage: true
@@ -13,8 +18,7 @@ Features:
 MobHunt:
   KillCap: 50
   Points:
-    # It is important these line up 1 to 1 with
-    # their corresponding Minecraft Entity names.
+    # It is important these line up 1 to 1 with their corresponding Minecraft Entity names.
     Axolotl: 0
     Bat: 2
     Bee: 6

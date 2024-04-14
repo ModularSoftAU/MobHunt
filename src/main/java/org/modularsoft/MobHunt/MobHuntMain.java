@@ -33,15 +33,22 @@ public class MobHuntMain extends JavaPlugin {
         config = new PluginConfig(this);
         console = getServer().getConsoleSender();
 
+        // Check if DecentHolograms enabled.
+        if (!getServer().getPluginManager().isPluginEnabled("DecentHolograms")) {
+            getLogger().severe("DecentHolograms plugin is not enabled, hologram features will not work.");
+            return;
+        }
+
         HunterController hunterController = new HunterController(this);
         ScoreboardController scoreboardController = new ScoreboardController(this);
+        HologramController hologramController = new HologramController(this);
 
         // Connect to the database
         establishConnection();
 
         // Plugin Event Register
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new OnHunterJoin(this, hunterController, scoreboardController), this);
+        pluginManager.registerEvents(new OnHunterJoin(this, hunterController, scoreboardController, hologramController), this);
         pluginManager.registerEvents(new OnMobKill(this, hunterController, scoreboardController), this);
 
         // Command Registry
@@ -53,7 +60,7 @@ public class MobHuntMain extends JavaPlugin {
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
             console.sendMessage(ChatColor.GREEN + "Running Version: " + getDescription().getVersion());
-            console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularEnigma/MobHunt");
+            console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularSoftAU/MobHunt");
             console.sendMessage(ChatColor.GREEN + "Created By: " + getDescription().getAuthors());
         }
     }

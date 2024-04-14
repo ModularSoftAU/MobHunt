@@ -4,6 +4,8 @@ description: Hunt as many mobs overall, or of a unique mob type.
 version: ${project.version}
 authors: [ModularSoft]
 api-version: 1.20
+softdepend:
+  - DecentHolograms
 
 commands:
   mobstats:
