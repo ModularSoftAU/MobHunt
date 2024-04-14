@@ -1,14 +1,14 @@
-package com.modularenigma.MobHunt.commands;
+package org.modularsoft.MobHunt.commands;
 
-import com.modularenigma.MobHunt.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.modularsoft.MobHunt.HunterController;
+import org.modularsoft.MobHunt.MobHuntMain;
+import org.modularsoft.MobHunt.MobHuntQuery;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class mobleaderboard implements CommandExecutor {

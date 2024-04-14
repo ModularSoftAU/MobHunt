@@ -1,11 +1,11 @@
-package com.modularenigma.MobHunt;
+package org.modularsoft.MobHunt;
 
-import com.modularenigma.MobHunt.commands.mobclear;
-import com.modularenigma.MobHunt.commands.mobhelp;
-import com.modularenigma.MobHunt.commands.mobstats;
-import com.modularenigma.MobHunt.commands.mobleaderboard;
-import com.modularenigma.MobHunt.events.OnHunterJoin;
-import com.modularenigma.MobHunt.events.OnMobKill;
+import org.modularsoft.MobHunt.commands.mobclear;
+import org.modularsoft.MobHunt.commands.mobhelp;
+import org.modularsoft.MobHunt.commands.mobstats;
+import org.modularsoft.MobHunt.commands.mobleaderboard;
+import org.modularsoft.MobHunt.events.OnHunterJoin;
+import org.modularsoft.MobHunt.events.OnMobKill;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

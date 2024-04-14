@@ -1,8 +1,8 @@
-package com.modularenigma.MobHunt.commands;
+package org.modularsoft.MobHunt.commands;
 
-import com.modularenigma.MobHunt.MobHuntMain;
-import com.modularenigma.MobHunt.HunterController;
-import com.modularenigma.MobHunt.MobHuntQuery;
+import org.modularsoft.MobHunt.MobHuntMain;
+import org.modularsoft.MobHunt.HunterController;
+import org.modularsoft.MobHunt.MobHuntQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;

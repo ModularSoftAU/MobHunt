@@ -1,12 +1,9 @@
-package com.modularenigma.MobHunt.commands;
+package org.modularsoft.MobHunt.commands;
 
-import com.modularenigma.MobHunt.HunterController;
-import com.modularenigma.MobHunt.MobHuntMain;
-import com.modularenigma.MobHunt.MobHuntQuery;
+import org.modularsoft.MobHunt.HunterController;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 public class mobhelp implements CommandExecutor {

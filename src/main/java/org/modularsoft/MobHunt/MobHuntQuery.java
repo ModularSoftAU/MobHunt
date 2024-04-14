@@ -1,4 +1,4 @@
-package com.modularenigma.MobHunt;
+package org.modularsoft.MobHunt;
 
 import lombok.Getter;
 import org.bukkit.command.CommandSender;

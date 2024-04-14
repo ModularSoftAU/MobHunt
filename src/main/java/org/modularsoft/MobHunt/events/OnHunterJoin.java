@@ -1,9 +1,9 @@
-package com.modularenigma.MobHunt.events;
+package org.modularsoft.MobHunt.events;
 
-import com.modularenigma.MobHunt.MobHuntMain;
-import com.modularenigma.MobHunt.HunterController;
-import com.modularenigma.MobHunt.MobHuntQuery;
-import com.modularenigma.MobHunt.ScoreboardController;
+import org.modularsoft.MobHunt.MobHuntMain;
+import org.modularsoft.MobHunt.HunterController;
+import org.modularsoft.MobHunt.MobHuntQuery;
+import org.modularsoft.MobHunt.ScoreboardController;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

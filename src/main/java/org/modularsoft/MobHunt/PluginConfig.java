@@ -1,6 +1,6 @@
-package com.modularenigma.MobHunt;
+package org.modularsoft.MobHunt;
 
-import com.modularenigma.MobHunt.helpers.CollectionMilestone;
+import org.modularsoft.MobHunt.helpers.CollectionMilestone;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
