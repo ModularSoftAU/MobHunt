@@ -1,8 +1,7 @@
-package com.modularenigma.MobHunt.commands;
+package org.modularsoft.MobHunt.commands;
 
-import com.modularenigma.MobHunt.MobHuntMain;
-import com.modularenigma.MobHunt.ScoreboardController;
-import com.modularenigma.MobHunt.*;
+import org.modularsoft.MobHunt.MobHuntMain;
+import org.modularsoft.MobHunt.ScoreboardController;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -10,6 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.modularsoft.MobHunt.HunterController;
+import org.modularsoft.MobHunt.MobHuntQuery;
 
 public class mobclear implements CommandExecutor {
     private final MobHuntMain plugin;
@@ -36,7 +37,7 @@ public class mobclear implements CommandExecutor {
         }
 
         // If another argument is present, clear the stats of another player.
-        // By using OfflinePlater, we can remove the stats of a player who is not
+        // By using OfflinePlayer, we can remove the stats of a player who is not
         // currently online.
         if (args.length > 0) {
             // Check to see if the player has logged in before.

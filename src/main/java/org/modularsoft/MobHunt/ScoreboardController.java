@@ -1,4 +1,4 @@
-package com.modularenigma.MobHunt;
+package org.modularsoft.MobHunt;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

@@ -1,6 +1,6 @@
-package com.modularenigma.MobHunt;
+package org.modularsoft.MobHunt;
 
-import com.modularenigma.MobHunt.helpers.DefaultFontInfo;
+import org.modularsoft.MobHunt.helpers.DefaultFontInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;

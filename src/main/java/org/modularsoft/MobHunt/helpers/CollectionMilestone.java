@@ -1,6 +1,6 @@
-package com.modularenigma.MobHunt.helpers;
+package org.modularsoft.MobHunt.helpers;
 
-import com.modularenigma.MobHunt.HunterController;
+import org.modularsoft.MobHunt.HunterController;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
