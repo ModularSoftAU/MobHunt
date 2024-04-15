@@ -1,5 +1,6 @@
 package org.modularsoft.MobHunt;
 
+import org.bukkit.scheduler.BukkitScheduler;
 import org.modularsoft.MobHunt.commands.mobclear;
 import org.modularsoft.MobHunt.commands.mobhelp;
 import org.modularsoft.MobHunt.commands.mobstats;
@@ -41,14 +42,14 @@ public class MobHuntMain extends JavaPlugin {
 
         HunterController hunterController = new HunterController(this);
         ScoreboardController scoreboardController = new ScoreboardController(this);
-        HologramController hologramController = new HologramController(this);
+        HologramController hologramController = new HologramController(this, hunterController);
 
         // Connect to the database
         establishConnection();
 
         // Plugin Event Register
         PluginManager pluginManager = getServer().getPluginManager();
-        pluginManager.registerEvents(new OnHunterJoin(this, hunterController, scoreboardController, hologramController), this);
+        pluginManager.registerEvents(new OnHunterJoin(this, hunterController, scoreboardController), this);
         pluginManager.registerEvents(new OnMobKill(this, hunterController, scoreboardController), this);
 
         // Command Registry
@@ -63,6 +64,12 @@ public class MobHuntMain extends JavaPlugin {
             console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularSoftAU/MobHunt");
             console.sendMessage(ChatColor.GREEN + "Created By: " + getDescription().getAuthors());
         }
+
+        // Create hologram if it doesn't exist.
+        hologramController.reloadHunterLeaderboard();
+
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, hologramController::reloadHunterLeaderboard, 0L, 20L * 10);
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HunterController {
@@ -56,13 +57,13 @@ public class HunterController {
         String title = plugin.config().getLangStatsTitle()
                 .replace("%Player%", player.getName());
 
-        sendMessageInCentre(player, title, centrePixel);
+        player.sendMessage(centreMessage(title, centrePixel));
 
         for (MobHuntQuery.MobStat stat : stats) {
             String statMessage = plugin.config().getLangStatsFormat()
                     .replace("%MobType%", stat.mobType())
                     .replace("%Kills%", "" + stat.mobsKilled());
-            sendMessageInCentre(player, statMessage, centrePixel);
+            player.sendMessage(centreMessage(statMessage, centrePixel));
         }
     }
 
@@ -160,7 +161,7 @@ public class HunterController {
      * @param message The message to measure its length.
      * @return The length of the message in pixels (" " characters).
      */
-    private static int minecraftMessageLengthInPixels(String message) {
+    public static int minecraftMessageLengthInPixels(String message) {
         if (message == null || message.equals(""))
             return 0;
 
@@ -202,46 +203,42 @@ public class HunterController {
     /**
      * From: https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/
      * Sends the message to the chat such that it is in the middle of the chat box.
-     * @param player The player sending the message.
      * @param message The message to send.
      * @param centrePixel The pixel to treat as the centre of the message.
      */
-    private static void sendMessageInCentre(Player player, String message, int centrePixel) {
+    public static String centreMessage(String message, int centrePixel) {
         int messagePxSize = minecraftMessageLengthInPixels(message);
         int halvedMessageSize = messagePxSize / 2;
         int toCompensate = centrePixel - halvedMessageSize;
-        player.sendMessage(getPixelPadding(toCompensate) + message);
+        return getPixelPadding(toCompensate) + message;
     }
 
     /**
      * For when a player wants to see who the best hunters are.
-     * @param player The player who requested the leaderboard.
      * @param bestHunters A (presorted) list of stats to show on the leaderboard.
      */
-    public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters) {
-        showLeaderBoardResponse(player, bestHunters, null);
+    public List<String> getLeaderboardText(List<MobHuntQuery.MobHunter> bestHunters) {
+        return getLeaderboardText(bestHunters, null);
     }
 
     /**
      * When you want to see the leaderboard with a heading of a specific mob.
-     * @param player The player who requested the leaderboard.
      * @param bestHunters A (presorted) list of stats to show on the leaderboard.
      * @param title The title to give the leaderboard.
      */
-    public void showLeaderBoardResponse(Player player, List<MobHuntQuery.MobHunter> bestHunters, String title) {
-        int centrePixel = minecraftMessageLengthInPixels(
-                plugin.config().getLangLeaderboardHeader()) / 2;
+    public List<String> getLeaderboardText(List<MobHuntQuery.MobHunter> bestHunters, String title) {
+        List<String> lines = new ArrayList<>();
 
         // Show the header first
-        sendMessageInCentre(player, plugin.config().getLangLeaderboardHeader(), centrePixel);
-        player.sendMessage("");
+        lines.add(plugin.config().getLangLeaderboardHeader());
+        lines.add("");
 
         if (title != null)
-            sendMessageInCentre(player, title, centrePixel);
+            lines.add(title);
 
         if (bestHunters.size() == 0) {
             // If there are no hunters we should probably tell the player
-            sendMessageInCentre(player, plugin.config().getLangLeaderboardNoMobsKilled(), centrePixel);
+            lines.add(plugin.config().getLangLeaderboardNoMobsKilled());
         } else {
             for (int i = 0; i < bestHunters.size(); i++) {
                 MobHuntQuery.MobHunter hunter = bestHunters.get(i);
@@ -265,11 +262,12 @@ public class HunterController {
                         .replace("%Ranking%", rankToOrdinal(rank))
                         .replace("%Player%", hunter.name())
                         .replace("%Points%", "" + hunter.points());
-                sendMessageInCentre(player, rankingMessage, centrePixel);
+                lines.add(rankingMessage);
             }
         }
 
-        player.sendMessage("");
-        sendMessageInCentre(player, plugin.config().getLangLeaderboardHeader(), centrePixel);
+        lines.add("");
+        lines.add(plugin.config().getLangLeaderboardHeader());
+        return lines;
     }
 }

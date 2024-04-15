@@ -1,43 +1,43 @@
 package org.modularsoft.MobHunt;
 
 import eu.decentsoftware.holograms.api.DHAPI;
+import eu.decentsoftware.holograms.api.holograms.Hologram;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public class HologramController {
     private final MobHuntMain plugin;
+    private final HunterController hunterController;
 
-    public HologramController(MobHuntMain plugin) {
+    public HologramController(MobHuntMain plugin, HunterController hunterController) {
         this.plugin = plugin;
+        this.hunterController = hunterController;
     }
 
-    public void createHunterLeaderBoardHologram(Player player) {
-        if (DHAPI.getHologram("mh_leaderboard") != null)
-            return;
+    public void reloadHunterLeaderboard() {
+        Hologram leaderboardHologram = DHAPI.getHologram("mh_leaderboard");
+        if (leaderboardHologram == null) {
+            double x = plugin.config().getHologramLocationX();
+            double y = plugin.config().getHologramLocationY();
+            double z = plugin.config().getHologramLocationZ();
+            String worldName = plugin.config().getHologramLocationWorld();
 
-        double x = plugin.config().getHologramLocationX();
-        double y = plugin.config().getHologramLocationY();
-        double z = plugin.config().getHologramLocationZ();
+            World world = Bukkit.getWorld(worldName);
+            if (world == null) {
+                plugin.getLogger().warning("World '" + worldName + "' not found.");
+                return;
+            }
 
-        String worldName = plugin.config().getHologramLocationWorld();
-        World world = Bukkit.getWorld(worldName);
-        if (world == null) {
-            plugin.getLogger().warning("World '" + worldName + "' not found.");
-            return;
+            Location location = new Location(world, x, y, z);
+            leaderboardHologram = DHAPI.createHologram("mh_leaderboard", location, false);
         }
 
-        Location location = new Location(world, x, y, z);
-
         List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestHunters(
-                plugin, player, plugin.config().getLeaderboardShowPlayers());
-
-        DHAPI.addHologramLine(DHAPI.getHologram("mh_leaderboard"), "test");
-
-        DHAPI.createHologram("mh_leaderboard", location, true);
+                plugin, null, 10);
+        List<String> lines = hunterController.getLeaderboardText(bestHunters);
+        DHAPI.setHologramLines(leaderboardHologram, lines);
     }
-
 }

@@ -11,6 +11,7 @@ import java.util.*;
 public class PluginConfig {
     private final MobHuntMain plugin;
     private FileConfiguration config;
+    private HologramController hologramController;
 
     @Getter private String databaseHost;
     @Getter private int databasePort;

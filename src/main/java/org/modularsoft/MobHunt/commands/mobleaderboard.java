@@ -29,6 +29,7 @@ public class mobleaderboard implements CommandExecutor {
 
         int showPlayers = plugin.config().getLeaderboardShowPlayers();
 
+        List<String> leaderboardText;
         // If another argument is present, then we assume this command is asking for the
         // leaderboard of a specific Mob Type.
         if (args.length > 0) {
@@ -50,13 +51,20 @@ public class mobleaderboard implements CommandExecutor {
             // Show the leaderboard with a specific title.
             String leaderboardTitle = plugin.config().getLangLeaderboardMobTitleFormat()
                     .replace("%MobType%", mobType);
-            hunterController.showLeaderBoardResponse(player, bestHunters, leaderboardTitle);
+            leaderboardText = hunterController.getLeaderboardText(bestHunters, leaderboardTitle);
         } else {
             // This is for seeing the overall leaderboard for points.
             List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestHunters(
                     plugin, player, showPlayers);
-            hunterController.showLeaderBoardResponse(player, bestHunters);
+            leaderboardText = hunterController.getLeaderboardText(bestHunters);
         }
+
+        int centrePixel = HunterController.minecraftMessageLengthInPixels(
+                plugin.config().getLangLeaderboardHeader()) / 2;
+        for (String line: leaderboardText) {
+            player.sendMessage(HunterController.centreMessage(line, centrePixel));
+        }
+
         return true;
     }
 }
