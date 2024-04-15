@@ -126,8 +126,7 @@ Lang:
       - "Killing Mobs rewards &5points&r, but sebsequent kills of the same Mob will yield less points."
       - "The best hunters will both, &ekill in quantity&r, and journey far and wide to &ehunt down the rarest Mobs&r with extreme prejudice."
       - ""
-      - "&6Happy hunting"
-      - "&6From Crafting For Christ&r"
+      - "&6Happy hunting!"
     Kill: "You killed a %MobType% for %Points% point%Plural%."
     CapReached: "You have reached the kill cap of %Cap% for %MobType%s.
       Points will not be awarded for killing this mob, but stats tracking
