@@ -1,5 +1,6 @@
 package org.modularsoft.MobHunt;
 
+import org.bukkit.scheduler.BukkitScheduler;
 import org.modularsoft.MobHunt.commands.mobclear;
 import org.modularsoft.MobHunt.commands.mobhelp;
 import org.modularsoft.MobHunt.commands.mobstats;
@@ -33,8 +34,15 @@ public class MobHuntMain extends JavaPlugin {
         config = new PluginConfig(this);
         console = getServer().getConsoleSender();
 
+        // Check if DecentHolograms enabled.
+        if (!getServer().getPluginManager().isPluginEnabled("DecentHolograms")) {
+            getLogger().severe("DecentHolograms plugin is not enabled, hologram features will not work.");
+            return;
+        }
+
         HunterController hunterController = new HunterController(this);
         ScoreboardController scoreboardController = new ScoreboardController(this);
+        HologramController hologramController = new HologramController(this, hunterController);
 
         // Connect to the database
         establishConnection();
@@ -53,9 +61,15 @@ public class MobHuntMain extends JavaPlugin {
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
             console.sendMessage(ChatColor.GREEN + "Running Version: " + getDescription().getVersion());
-            console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularEnigma/MobHunt");
+            console.sendMessage(ChatColor.GREEN + "GitHub Repository: https://github.com/ModularSoftAU/MobHunt");
             console.sendMessage(ChatColor.GREEN + "Created By: " + getDescription().getAuthors());
         }
+
+        // Create hologram if it doesn't exist.
+        hologramController.reloadHunterLeaderboard();
+
+        BukkitScheduler scheduler = getServer().getScheduler();
+        scheduler.scheduleSyncRepeatingTask(this, hologramController::reloadHunterLeaderboard, 0L, 20L * 10);
     }
 
     @Override

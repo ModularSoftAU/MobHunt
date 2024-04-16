@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import javax.annotation.Nullable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -230,7 +231,7 @@ public class MobHuntQuery {
      * @param topHunters The limit of the size of the hunters list.
      * @return Returns a list of the Best Hunters. Index 0 is the best player and so on...
      */
-    public static List<MobHunter> getBestHunters(MobHuntMain plugin, Player player, int topHunters) {
+    public static List<MobHunter> getBestHunters(MobHuntMain plugin, @Nullable Player player, int topHunters) {
         List<MobHunter> bestHunters = new ArrayList<>();
 
         try {
@@ -248,7 +249,9 @@ public class MobHuntQuery {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+            if (player != null) {
+                player.sendMessage(plugin.config().getLangDatabaseConnectionError());
+            }
         }
         return bestHunters;
     }

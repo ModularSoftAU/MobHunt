@@ -11,6 +11,7 @@ import java.util.*;
 public class PluginConfig {
     private final MobHuntMain plugin;
     private FileConfiguration config;
+    private HologramController hologramController;
 
     @Getter private String databaseHost;
     @Getter private int databasePort;
@@ -19,6 +20,11 @@ public class PluginConfig {
     @Getter private String databasePassword;
 
     @Getter private String adminRole;
+
+    @Getter private String hologramLocationWorld;
+    @Getter private int hologramLocationX;
+    @Getter private int hologramLocationY;
+    @Getter private int hologramLocationZ;
 
     @Getter private boolean featureOnEnableConsoleMessageEnabled;
     @Getter private boolean featureOnDisableConsoleMessageEnabled;
@@ -75,6 +81,12 @@ public class PluginConfig {
         databasePassword = config.getString("Database.Password");
 
         adminRole = config.getString("AdminRole");
+
+        hologramLocationWorld = config.getString("Hologram.LocationWorld");
+        hologramLocationX = config.getInt("Hologram.LocationX");
+        hologramLocationY = config.getInt("Hologram.LocationY");
+        hologramLocationZ = config.getInt("Hologram.LocationZ");
+
 
         featureOnEnableConsoleMessageEnabled = config.getBoolean("Features.OnEnabledConsoleMessage");
         featureOnDisableConsoleMessageEnabled = config.getBoolean("Features.OnDisabledConsoleMessage");

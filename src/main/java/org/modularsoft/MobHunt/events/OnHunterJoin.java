@@ -1,13 +1,10 @@
 package org.modularsoft.MobHunt.events;
 
-import org.modularsoft.MobHunt.MobHuntMain;
-import org.modularsoft.MobHunt.HunterController;
-import org.modularsoft.MobHunt.MobHuntQuery;
-import org.modularsoft.MobHunt.ScoreboardController;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.modularsoft.MobHunt.*;
 
 public class OnHunterJoin implements Listener {
     private final MobHuntMain plugin;
