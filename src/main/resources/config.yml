@@ -89,6 +89,12 @@ MobHunt:
     Zombie Villager: 6
     Zombie: 4
     Zombified Piglin: 0
+    Warden: 30
+    Frog: 3
+    Camel: 6
+    Sniffer: 0
+    Tadpole: 2
+    Allay: 6
 Sounds:
   MinorCollectionMilestone: ENTITY_PLAYER_LEVELUP
   MajorCollectionMilestone: UI_TOAST_CHALLENGE_COMPLETE
