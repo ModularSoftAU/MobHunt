@@ -23,6 +23,7 @@ When a player kills over an X amount of mobs, a message will broadcast to all on
 The milestones can be changed and modified in the `config.yml` under `Milestones.Messages` and you can change them based on Major and Minor.
 
 ### Holographic Leaderboard
+In the `config.yml` you can specify coordinates of a hologram to display the top players on the leaderboard.
 
 
 ## Commands
