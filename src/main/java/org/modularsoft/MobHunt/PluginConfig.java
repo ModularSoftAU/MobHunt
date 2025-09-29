@@ -11,14 +11,6 @@ import java.util.*;
 public class PluginConfig {
     private final MobHuntMain plugin;
     private FileConfiguration config;
-    private HologramController hologramController;
-
-    @Getter private String databaseHost;
-    @Getter private int databasePort;
-    @Getter private String databaseName;
-    @Getter private String databaseUsername;
-    @Getter private String databasePassword;
-
     @Getter private String adminRole;
 
     @Getter private String hologramLocationWorld;
@@ -39,7 +31,7 @@ public class PluginConfig {
     @Getter private List<CollectionMilestone> collectionMilestones;
     @Getter private int leaderboardShowPlayers;
 
-    @Getter private String langDatabaseConnectionError;
+    @Getter private String langStorageError;
     @Getter private String langOnMobClear;
     @Getter private String langNotAPlayer;
     @Getter private String langInsufficientPermissions;
@@ -74,12 +66,6 @@ public class PluginConfig {
         plugin.reloadConfig();
         config = plugin.getConfig();
 
-        databaseHost = config.getString("Database.Host");
-        databasePort = config.getInt("Database.Port");
-        databaseName = config.getString("Database.Name");
-        databaseUsername = config.getString("Database.Username");
-        databasePassword = config.getString("Database.Password");
-
         adminRole = config.getString("AdminRole");
 
         hologramLocationWorld = config.getString("Hologram.LocationWorld");
@@ -107,7 +93,10 @@ public class PluginConfig {
 
         leaderboardShowPlayers = config.getInt("Leaderboard.ShowPlayers");
 
-        langDatabaseConnectionError =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Database.ConnectionError")));
+        String storageError = config.getString("Lang.Storage.Error");
+        if (storageError == null)
+            storageError = config.getString("Lang.Database.ConnectionError", "&cA storage error has occurred, please contact an Administrator.");
+        langStorageError = ChatColor.translateAlternateColorCodes('&', storageError);
         langOnMobClear =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.OnMobClear")));
         langNotAPlayer =                 ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.NotAPlayer")));
         langInsufficientPermissions =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Command.InsufficientPermissions")));

@@ -1,9 +1,3 @@
-Database:
-  Host: "127.0.0.1"
-  Port: 3306
-  Name: "MobHunt"
-  Username: "root"
-  Password: "root"
 AdminRole: "mobhunt.admin"
 Hologram:
   LocationWorld: world
@@ -109,8 +103,8 @@ Lang:
   # as the altColorChat. This means that color can be encoded into the strings
   # from here. Some strings also have variables replaced in them. If this is the
   # case, it will be listed here.
-  Database:
-    ConnectionError: "&cA database error has occurred, please contact an Administrator."
+  Storage:
+    Error: "&cA storage error has occurred, please contact an Administrator."
   Command:
     OnMobClear: "All points have been cleared from %Player%."
     NotAPlayer: "&cYou must be a player to run this command."

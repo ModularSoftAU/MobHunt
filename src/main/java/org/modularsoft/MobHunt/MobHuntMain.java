@@ -7,20 +7,18 @@ import org.modularsoft.MobHunt.commands.mobstats;
 import org.modularsoft.MobHunt.commands.mobleaderboard;
 import org.modularsoft.MobHunt.events.OnHunterJoin;
 import org.modularsoft.MobHunt.events.OnMobKill;
-import com.mysql.cj.jdbc.MysqlDataSource;
+import org.modularsoft.MobHunt.storage.PlayerDataStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class MobHuntMain extends JavaPlugin {
     private PluginConfig config;
-    private Connection connection;
+    private PlayerDataStorage playerDataStorage;
     private ConsoleCommandSender console;
 
     public PluginConfig config() {
@@ -40,12 +38,11 @@ public class MobHuntMain extends JavaPlugin {
             return;
         }
 
+        playerDataStorage = new PlayerDataStorage(this);
+
         HunterController hunterController = new HunterController(this);
         ScoreboardController scoreboardController = new ScoreboardController(this);
         HologramController hologramController = new HologramController(this, hunterController);
-
-        // Connect to the database
-        establishConnection();
 
         // Plugin Event Register
         PluginManager pluginManager = getServer().getPluginManager();
@@ -76,35 +73,13 @@ public class MobHuntMain extends JavaPlugin {
     public void onDisable() {
         if (config.isFeatureOnDisableConsoleMessageEnabled())
             console.sendMessage(ChatColor.RED + getDescription().getName() + " is now disabled.");
+
+        if (playerDataStorage != null)
+            playerDataStorage.save();
     }
 
-    public void establishConnection() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            MysqlDataSource dataSource = new MysqlDataSource();
-            dataSource.setServerName(config.getDatabaseHost());
-            dataSource.setPort(config.getDatabasePort());
-            dataSource.setDatabaseName(config.getDatabaseName());
-            dataSource.setUser(config.getDatabaseUsername());
-            dataSource.setPassword(config.getDatabasePassword());
-            connection = dataSource.getConnection();
-        } catch (SQLException | ClassNotFoundException e) {
-            getLogger().info(config.getLangDatabaseConnectionError());
-            e.printStackTrace();
-        }
-    }
-
-    public Connection getConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                getLogger().info(config.getLangDatabaseConnectionError());
-                e.printStackTrace();
-            }
-        }
-        establishConnection();
-        return connection;
+    public PlayerDataStorage getPlayerDataStorage() {
+        return playerDataStorage;
     }
 
     /**
