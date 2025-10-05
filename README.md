@@ -2,12 +2,28 @@
 
 Mob Hunt is a Paper plugin that rewards players for hunting across the overworld and beyond. Track unique mob kills, earn points, celebrate milestones, and showcase the best hunters on holograms or scoreboards – now without the need for an external database.
 
+## Table of Contents
+
+1. [Key Features](#key-features)
+2. [Requirements](#requirements)
+3. [Installation](#installation)
+4. [Getting Started In-Game](#getting-started-in-game)
+5. [How the Scoring System Works](#how-the-scoring-system-works)
+6. [Milestones, Rewards, and Announcements](#milestones-rewards-and-announcements)
+7. [Leaderboards & Competitive Play](#leaderboards--competitive-play)
+8. [Commands](#commands)
+9. [Tips & Configuration Highlights](#tips--configuration-highlights)
+10. [Player Field Guide](#player-field-guide)
+11. [Building From Source](#building-from-source)
+12. [Contributing](#contributing)
+
 ## Key Features
 
 * **YAML-backed player data** – Player statistics and points are saved inside `plugins/MobHunt/playerdata.yml`, making the plugin portable to any server without requiring MySQL.
 * **Configurable scoring** – Assign custom point values for each mob type and define the kill cap that controls diminishing returns.
 * **Milestones and announcements** – Reward hunters with customizable milestone notifications and sounds.
 * **Leaderboards everywhere** – Display top hunters through chat commands, scoreboards, or optional DecentHolograms integration.
+* **Player-friendly tutorials** – `/mobhelp` and the new [Player Field Guide](#player-field-guide) walk newcomers through the rules and best practices.
 
 ## Requirements
 
@@ -32,11 +48,33 @@ Mob Hunt is a Paper plugin that rewards players for hunting across the overworld
 * Each player entry contains their UUID, last known username, total points, and per-mob kill counts.
 * Data is written synchronously after each change to keep the file consistent. Regular server backups will include Mob Hunt progress automatically.
 
-## Gameplay Overview
+## Getting Started In-Game
 
-* Every mob kill grants points based on `MobHunt.Points`. The reward decreases as players approach the configured kill cap for a mob, encouraging variety.
-* Reaching milestone thresholds (minor or major) triggers configurable sounds and broadcasts.
-* `/mobleaderboard` and optional holograms showcase the top hunters so competition stays fierce.
+1. **Join the hunt** – Use `/mobhelp` after you log in to read the tutorial text configured by your server admins.
+2. **Check your stats** – Run `/mobstats` to see which mobs you have hunted and how many points you have.
+3. **Pick your targets** – Focus on the mobs worth the most in your server’s `config.yml`, but be mindful of diminishing returns near the kill cap.
+4. **Watch the scoreboard** – If enabled, the sidebar updates live as you earn points.
+5. **Celebrate milestones** – Keep an ear out for sounds or broadcasts letting everyone know you reached a minor or major milestone.
+
+## How the Scoring System Works
+
+* **Per-mob points** – Every mob type has a configurable point value. Higher values encourage players to chase rarer mobs.
+* **Kill caps** – After a configurable number of kills, the reward for that mob dwindles to prevent farming the same creature.
+* **Example** – If `Zombie` is worth 5 points with a kill cap of 50, the first few zombies grant the full 5 points. As you approach 50 kills you receive fewer points, nudging you toward other mobs.
+* **Persistent progress** – All points and kill totals are saved immediately to `playerdata.yml`, so relogs and restarts keep your stats intact.
+
+## Milestones, Rewards, and Announcements
+
+* **Minor vs major milestones** – Configure two tiers of celebratory messages. For example, a minor milestone at 1,000 points and a major one at 5,000.
+* **Custom sounds and titles** – Use `Lang.Milestone` keys to tailor the broadcast, sound effect, and title/subtitle players see.
+* **Server-wide recognition** – Major milestones can broadcast to all players, while minor milestones can be private—mix and match to create your preferred atmosphere.
+
+## Leaderboards & Competitive Play
+
+* **Chat leaderboards** – `/mobleaderboard` lists the top hunters overall. Add a mob name to focus on the best creeper hunter, blaze slayer, and more.
+* **Scoreboards** – When enabled, the sidebar updates every refresh tick to highlight the leaders and your personal rank.
+* **Holograms** – Pair Mob Hunt with [DecentHolograms](https://www.spigotmc.org/resources/decent-holograms-1-8-1-20-4.96927/) to drop a 3D leaderboard into your spawn area.
+* **Season resets** – Admins can archive `playerdata.yml` at the end of a season and start fresh by deleting or renaming the file.
 
 ## Commands
 
@@ -45,13 +83,19 @@ Mob Hunt is a Paper plugin that rewards players for hunting across the overworld
 | `/mobstats [player]` | View your own mob kill breakdown or specify a player (admin only) to inspect their stats. | `mobhunt.admin` for viewing others |
 | `/mobclear [player]` | Reset your own Mob Hunt progress, or specify another player to reset them (admin only). | `mobhunt.admin` |
 | `/mobleaderboard [mob]` | Display the overall leaderboard or the top hunters for a specific mob type. | *None* |
-| `/mobhelp` | Show the Mob Hunt tutorial text to explain the rules. | *None* |
+| `/mobhelp` | Show the Mob Hunt tutorial text to explain the rules and scoring. | *None* |
 
 ## Tips & Configuration Highlights
 
 * **Scoreboards** – Customize the sidebar in `Lang.Scoreboard` to match your server branding.
 * **Holograms** – Configure `Hologram.LocationWorld/X/Y/Z` if you use DecentHolograms to show the live leaderboard.
 * **Storage error message** – `Lang.Storage.Error` is sent if the plugin can’t write to `playerdata.yml`; make sure the plugin folder is writable.
+* **Onboarding tip** – Pre-fill `Lang.Help` with a quick explanation of the point values on your server so `/mobhelp` answers the most common questions.
+* **Season archives** – Keep a copy of `playerdata.yml` whenever you want to preserve a season’s results before resetting the hunt.
+
+## Player Field Guide
+
+Looking for an extended walkthrough or something you can share with your community? Read the [Mob Hunt Player Field Guide](docs/player-field-guide.md) for examples, strategies, and printable quick tips.
 
 ## Building From Source
 
