@@ -29,9 +29,9 @@ Mob Hunt is a Paper plugin that rewards players for hunting across the overworld
 
 ## Requirements
 
-* Paper/Paper forks 1.20.4+ (matching the API version declared in `pom.xml`).
-* Java 17 or later.
-* *(Optional)* [DecentHolograms](https://www.spigotmc.org/resources/decent-holograms-1-8-1-20-4.96927/) for holographic leaderboards.
+* Paper/Paper forks 1.21.8+ (matching the API version declared in `pom.xml`).
+* Java 21 or later.
+* *(Optional)* [DecentHolograms](https://www.spigotmc.org/resources/decent-holograms.96927/) for holographic leaderboards.
 
 ## Installation
 
@@ -157,7 +157,7 @@ cd MobHunt
 mvn package
 ```
 
-The compiled jar will be located in `target/`.
+Use JDK 21 when compiling; the plugin targets the Paper 1.21 line. The compiled jar will be located in `target/`.
 
 ## Contributing
 
