@@ -1,6 +1,6 @@
 # Mob Hunt Player Field Guide
 
-The Mob Hunt plugin turns mob-slaying into a season-long competition. This guide helps new hunters understand the rules, scoring, and strategies so they can climb the leaderboard.
+The Mob Hunt plugin turns mob-slaying into an ongoing competition. This guide helps new hunters understand the rules, scoring, and strategies so they can climb the leaderboard.
 
 ## Quick Start Checklist
 
@@ -46,15 +46,13 @@ You can review the top hunters anytime:
 * **Scoreboards** – Some servers enable a sidebar scoreboard so you can track your rank in real time.
 * **Holograms** – If DecentHolograms is installed, a live hologram can display the top 10 hunters at spawn or in a hall of fame.
 
-### Seasonal Play
+### Running Events
 
-Many servers run Mob Hunt in seasons. When a new season starts:
+Some communities like to run recurring Mob Hunt events to keep the competition fresh. When your staff team launches a new event:
 
-1. Staff clear or archive `playerdata.yml`.
-2. Everyone returns to zero points.
-3. Prizes go to the hunters who dominated the previous season.
-
-Use this time to set new goals or devise strategies with your friends.
+1. Decide whether to clear or archive `playerdata.yml`.
+2. Announce the rules, prizes, and any special modifiers.
+3. Encourage players to plan new strategies together.
 
 ## Hunting Strategies
 
@@ -94,6 +92,6 @@ Print or copy these lines into your server’s announcement channels:
 * “Use `/mobstats` after every hunt to see where you’re close to a new milestone.”
 * “Rotate between overworld, Nether, and End mobs to maximize points.”
 * “Hit `/mobleaderboard blaze` to see who rules the Nether this week.”
-* “Season reset soon—archive your best hunts and get ready for a fresh climb!”
+* “Event night is coming—archive your best hunts and get ready for a fresh climb!”
 
 Happy hunting!

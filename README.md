@@ -70,7 +70,7 @@ players:
 
 * Treat `playerdata.yml` like any other world save file: include it in regular server backups.
 * The file is human-readable, so it can also be tracked with Git or other version control systems if you maintain a configuration repository.
-* Because updates are synchronous, a server crash cannot leave a half-written entry, but it is still good practice to make off-site backups before large events or season resets.
+* Because updates are synchronous, a server crash cannot leave a half-written entry, but it is still good practice to make off-site backups before large events or other administrative data resets.
 
 ### Editing Safely
 
@@ -104,7 +104,6 @@ players:
 * **Chat leaderboards** – `/mobleaderboard` lists the top hunters overall. Add a mob name to focus on the best creeper hunter, blaze slayer, and more.
 * **Scoreboards** – When enabled, the sidebar updates every refresh tick to highlight the leaders and your personal rank.
 * **Holograms** – Pair Mob Hunt with [DecentHolograms](https://www.spigotmc.org/resources/decent-holograms-1-8-1-20-4.96927/) to drop a 3D leaderboard into your spawn area.
-* **Season resets** – Admins can archive `playerdata.yml` at the end of a season and start fresh by deleting or renaming the file.
 
 ## Commands
 
@@ -121,7 +120,7 @@ players:
 * **Holograms** – Configure `Hologram.LocationWorld/X/Y/Z` if you use DecentHolograms to show the live leaderboard. If the plugin is missing, Mob Hunt will continue running and simply skip hologram updates.
 * **Storage error message** – `Lang.Storage.Error` is sent if the plugin can’t write to `playerdata.yml`; make sure the plugin folder is writable.
 * **Onboarding tip** – Pre-fill `Lang.Help` with a quick explanation of the point values on your server so `/mobhelp` answers the most common questions.
-* **Season archives** – Keep a copy of `playerdata.yml` whenever you want to preserve a season’s results before resetting the hunt.
+* **Historical archives** – Keep a copy of `playerdata.yml` whenever you want to preserve a snapshot of results before resetting the hunt or running a special event.
 
 ## Migrating from Legacy MySQL Builds
 

@@ -82,6 +82,6 @@ players:
 
 ## 6. Keep a Safety Backup
 
-Archive both the exported CSV and the updated `playerdata.yml` somewhere safe. If you ever reset a season or spot an incorrect value, you can quickly roll back without repeating the migration.
+Archive both the exported CSV and the updated `playerdata.yml` somewhere safe. If you ever reset the hunt or spot an incorrect value, you can quickly roll back without repeating the migration.
 
 Happy hunting! Your players retain their hard-earned milestones while enjoying the simplified setup of the YAML edition.
