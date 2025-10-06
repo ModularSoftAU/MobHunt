@@ -43,7 +43,7 @@ You can review the top hunters anytime:
 
 * `/mobleaderboard` – View the overall leaders.
 * `/mobleaderboard <mob>` – See the best hunter for a specific mob.
-* **Scoreboards** – Some servers enable a sidebar scoreboard so you can track your rank in real time.
+* **Scoreboards** – Many servers enable a sidebar scoreboard so you can track your rank in real time; hide or show it with `/mobscoreboard` if you need more screen space.
 * **Holograms** – If DecentHolograms is installed, a live hologram can display the top 10 hunters at spawn or in a hall of fame.
 
 ### Running Events
@@ -82,8 +82,8 @@ A: It depends on your server’s rules. The kill cap prevents infinite farming, 
 **Q: How do I know the kill cap for a mob?**  
 A: Ask staff or view the server’s `config.yml`. Some servers include the values in `/mobhelp`.
 
-**Q: My stats seem stuck—what do I do?**  
-A: Contact staff to make sure the plugin can write to `playerdata.yml`. Re-logging usually refreshes your scoreboard.
+**Q: My stats seem stuck—what do I do?**
+A: Contact staff to make sure the plugin can write to `playerdata.yml`. Re-logging or running `/mobscoreboard on` usually refreshes your sidebar.
 
 ## Shareable Quick Tips
 
@@ -92,6 +92,7 @@ Print or copy these lines into your server’s announcement channels:
 * “Use `/mobstats` after every hunt to see where you’re close to a new milestone.”
 * “Rotate between overworld, Nether, and End mobs to maximize points.”
 * “Hit `/mobleaderboard blaze` to see who rules the Nether this week.”
+* “Need breathing room? `/mobscoreboard off` hides the sidebar until you want it back.”
 * “Event night is coming—archive your best hunts and get ready for a fresh climb!”
 
 Happy hunting!

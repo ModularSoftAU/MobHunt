@@ -56,6 +56,9 @@ public class PluginConfig {
     @Getter private String langLeaderboardFormat;
     @Getter private String langScoreboardTitle;
     @Getter private List<String> langScoreboardContent;
+    @Getter private String langScoreboardToggleOn;
+    @Getter private String langScoreboardToggleOff;
+    @Getter private String langScoreboardToggleUsage;
 
     public PluginConfig(MobHuntMain plugin) {
         this.plugin = plugin;
@@ -125,6 +128,9 @@ public class PluginConfig {
         langScoreboardContent = new ArrayList<>();
         for (String s : config.getStringList("Lang.Scoreboard.Content"))
             langScoreboardContent.add(ChatColor.translateAlternateColorCodes('&', s));
+        langScoreboardToggleOn =       ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.ToggleOn")));
+        langScoreboardToggleOff =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.ToggleOff")));
+        langScoreboardToggleUsage =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.ToggleUsage")));
     }
 
     public Integer getMobPoints(String mobType) {

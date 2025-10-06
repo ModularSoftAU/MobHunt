@@ -2,6 +2,7 @@ package org.modularsoft.MobHunt;
 
 import org.modularsoft.MobHunt.helpers.DefaultFontInfo;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -268,6 +269,47 @@ public class HunterController {
 
         lines.add("");
         lines.add(plugin.config().getLangLeaderboardHeader());
+        return lines;
+    }
+
+    public List<String> getHologramLeaderboardText(List<MobHuntQuery.MobHunter> bestHunters) {
+        List<String> lines = new ArrayList<>();
+
+        lines.add(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "✦ Mob Hunt Legends ✦");
+        lines.add(ChatColor.GRAY + "Top hunters right now");
+        lines.add(" ");
+
+        if (bestHunters.isEmpty()) {
+            lines.add(ChatColor.DARK_GRAY + "No hunters yet");
+        } else {
+            boolean hasEntries = false;
+            for (int i = 0; i < bestHunters.size(); i++) {
+                MobHuntQuery.MobHunter hunter = bestHunters.get(i);
+                if (hunter.points() <= 0)
+                    break;
+
+                int rank = i + 1;
+                String badge = switch (rank) {
+                    case 1 -> ChatColor.GOLD + "★";
+                    case 2 -> ChatColor.GRAY + "☆";
+                    case 3 -> ChatColor.YELLOW + "✶";
+                    default -> ChatColor.DARK_GRAY + "•";
+                };
+
+                String line = badge + ChatColor.RESET + " " + ChatColor.WHITE + hunter.name()
+                        + ChatColor.GRAY + " — " + ChatColor.LIGHT_PURPLE + hunter.points()
+                        + ChatColor.GRAY + " pts";
+                lines.add(line);
+                hasEntries = true;
+            }
+
+            if (!hasEntries)
+                lines.add(ChatColor.DARK_GRAY + "No hunters yet");
+        }
+
+        lines.add(" ");
+        lines.add(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "✦ Keep hunting! ✦");
+
         return lines;
     }
 }

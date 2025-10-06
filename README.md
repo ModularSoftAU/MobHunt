@@ -55,6 +55,7 @@ players:
   6aa4c0e5-6f4f-4c34-8c6d-1d2b7890b2e4:
     username: ExampleHunter
     points: 1275
+    scoreboardEnabled: true
     mobs:
       Zombie: 34
       Creeper: 18
@@ -64,6 +65,7 @@ players:
 * `players` – root map keyed by player UUID.
 * `username` – last known username, updated whenever they join.
 * `points` – total Mob Hunt score (integer).
+* `scoreboardEnabled` – whether the sidebar scoreboard should appear for the player (`true` by default).
 * `mobs` – nested map of mob display names to kill counts used by scoreboards and leaderboards.
 
 ### Backup & Version Control
@@ -83,7 +85,7 @@ players:
 1. **Join the hunt** – Use `/mobhelp` after you log in to read the tutorial text configured by your server admins.
 2. **Check your stats** – Run `/mobstats` to see which mobs you have hunted and how many points you have.
 3. **Pick your targets** – Focus on the mobs worth the most in your server’s `config.yml`, but be mindful of diminishing returns near the kill cap.
-4. **Watch the scoreboard** – If enabled, the sidebar updates live as you earn points.
+4. **Watch the scoreboard** – The sidebar updates live as you earn points; use `/mobscoreboard` if you prefer to hide or reshow it.
 5. **Celebrate milestones** – Keep an ear out for sounds or broadcasts letting everyone know you reached a minor or major milestone.
 
 ## How the Scoring System Works
@@ -102,7 +104,7 @@ players:
 ## Leaderboards & Competitive Play
 
 * **Chat leaderboards** – `/mobleaderboard` lists the top hunters overall. Add a mob name to focus on the best creeper hunter, blaze slayer, and more.
-* **Scoreboards** – When enabled, the sidebar updates every refresh tick to highlight the leaders and your personal rank.
+* **Scoreboards** – When enabled, the sidebar updates every refresh tick to highlight the leaders and your personal rank. Players can opt out with `/mobscoreboard off` and opt back in later.
 * **Holograms** – Pair Mob Hunt with [DecentHolograms](https://www.spigotmc.org/resources/decent-holograms-1-8-1-20-4.96927/) to drop a 3D leaderboard into your spawn area.
 
 ## Commands
@@ -113,10 +115,11 @@ players:
 | `/mobclear [player]` | Reset your own Mob Hunt progress, or specify another player to reset them (admin only). | `mobhunt.admin` |
 | `/mobleaderboard [mob]` | Display the overall leaderboard or the top hunters for a specific mob type. | *None* |
 | `/mobhelp` | Show the Mob Hunt tutorial text to explain the rules and scoring. | *None* |
+| `/mobscoreboard [on\|off]` | Toggle the sidebar scoreboard for your own client. Run without arguments to swap states. | *None* |
 
 ## Tips & Configuration Highlights
 
-* **Scoreboards** – Customize the sidebar in `Lang.Scoreboard` to match your server branding.
+* **Scoreboards** – Customize the sidebar in `Lang.Scoreboard` to match your server branding and messaging when players toggle it on or off.
 * **Holograms** – Configure `Hologram.LocationWorld/X/Y/Z` if you use DecentHolograms to show the live leaderboard. If the plugin is missing, Mob Hunt will continue running and simply skip hologram updates.
 * **Storage error message** – `Lang.Storage.Error` is sent if the plugin can’t write to `playerdata.yml`; make sure the plugin folder is writable.
 * **Onboarding tip** – Pre-fill `Lang.Help` with a quick explanation of the point values on your server so `/mobhelp` answers the most common questions.

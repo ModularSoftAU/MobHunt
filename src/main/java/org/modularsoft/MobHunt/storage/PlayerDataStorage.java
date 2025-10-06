@@ -12,6 +12,7 @@ import java.util.logging.Level;
 
 public class PlayerDataStorage {
     private static final String PLAYERS_KEY = "players";
+    private static final String SIDEBAR_KEY = "scoreboardEnabled";
 
     private final MobHuntMain plugin;
     private final File dataFile;
@@ -91,6 +92,11 @@ public class PlayerDataStorage {
             dirty = true;
         }
 
+        if (!section.contains(SIDEBAR_KEY)) {
+            section.set(SIDEBAR_KEY, true);
+            dirty = true;
+        }
+
         if (!Objects.equals(section.getString("username"), username)) {
             section.set("username", username);
             dirty = true;
@@ -120,6 +126,22 @@ public class PlayerDataStorage {
     public void addPoints(UUID uuid, int delta) {
         int current = getPoints(uuid);
         setPoints(uuid, current + delta);
+    }
+
+    public boolean isSidebarEnabled(UUID uuid) {
+        ConfigurationSection section = getPlayerSection(uuid, false);
+        if (section == null)
+            return true;
+        return section.getBoolean(SIDEBAR_KEY, true);
+    }
+
+    public void setSidebarEnabled(UUID uuid, boolean enabled) {
+        ConfigurationSection section = getPlayerSection(uuid, true);
+        if (section == null)
+            return;
+
+        section.set(SIDEBAR_KEY, enabled);
+        save();
     }
 
     public int getMobKillCount(UUID uuid, String mobType) {

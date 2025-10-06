@@ -23,15 +23,16 @@ public class OnHunterJoin implements Listener {
         Player player = event.getPlayer();
         String username = player.getName();
 
-        // Refresh the scoreboard
-        scoreboardController.reloadScoreboard(player, MobHuntQuery.getPoints(plugin, player));
-
         // Check if a new player has joined
-        if (MobHuntQuery.addNewHunter(plugin, player)) {
+        boolean isNewHunter = MobHuntQuery.addNewHunter(plugin, player);
+        if (isNewHunter) {
             if (plugin.config().isFeatureOnNewHunterConsoleMessageEnabled())
                 plugin.getServer().getConsoleSender().sendMessage(username + " is a new player, creating a player profile.");
 
             hunterController.newPlayerJoinsTheHunt(player);
         }
+
+        // Refresh the scoreboard after ensuring the profile exists
+        scoreboardController.reloadScoreboard(player, MobHuntQuery.getPoints(plugin, player));
     }
 }

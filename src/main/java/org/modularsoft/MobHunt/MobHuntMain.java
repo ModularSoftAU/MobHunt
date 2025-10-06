@@ -5,6 +5,7 @@ import org.modularsoft.MobHunt.commands.mobclear;
 import org.modularsoft.MobHunt.commands.mobhelp;
 import org.modularsoft.MobHunt.commands.mobstats;
 import org.modularsoft.MobHunt.commands.mobleaderboard;
+import org.modularsoft.MobHunt.commands.mobscoreboard;
 import org.modularsoft.MobHunt.events.OnHunterJoin;
 import org.modularsoft.MobHunt.events.OnMobKill;
 import org.modularsoft.MobHunt.storage.PlayerDataStorage;
@@ -21,6 +22,7 @@ public class MobHuntMain extends JavaPlugin {
     private PlayerDataStorage playerDataStorage;
     private ConsoleCommandSender console;
     private HologramController hologramController;
+    private ScoreboardController scoreboardController;
 
     public PluginConfig config() {
         return config;
@@ -36,7 +38,7 @@ public class MobHuntMain extends JavaPlugin {
         playerDataStorage = new PlayerDataStorage(this);
 
         HunterController hunterController = new HunterController(this);
-        ScoreboardController scoreboardController = new ScoreboardController(this);
+        scoreboardController = new ScoreboardController(this);
         boolean hologramsAvailable = getServer().getPluginManager().isPluginEnabled("DecentHolograms");
         if (!hologramsAvailable) {
             getLogger().warning("DecentHolograms plugin is not enabled, hologram features will be skipped.");
@@ -54,6 +56,7 @@ public class MobHuntMain extends JavaPlugin {
         Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
         Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
         Objects.requireNonNull(getCommand("mobhelp")).setExecutor(new mobhelp(hunterController));
+        Objects.requireNonNull(getCommand("mobscoreboard")).setExecutor(new mobscoreboard(this, scoreboardController));
 
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");

@@ -37,7 +37,7 @@ public class HologramController {
 
         List<MobHuntQuery.MobHunter> bestHunters = MobHuntQuery.getBestHunters(
                 plugin, null, 10);
-        List<String> lines = hunterController.getLeaderboardText(bestHunters);
+        List<String> lines = hunterController.getHologramLeaderboardText(bestHunters);
         DHAPI.setHologramLines(leaderboardHologram, lines);
     }
 }

@@ -69,11 +69,14 @@ players:
   6aa4c0e5-6f4f-4c34-8c6d-1d2b7890b2e4:
     username: ExampleHunter
     points: 1275
+    scoreboardEnabled: true
     mobs:
       Zombie: 34
       Creeper: 18
       Ender Dragon: 1
 ```
+
+`scoreboardEnabled` defaults to `true`; set it to `false` for any players who prefer not to see the sidebar when they next join.
 
 ## 5. Validate and Restart
 

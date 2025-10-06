@@ -152,3 +152,6 @@ Lang:
       - "&ecraftingforchrist.net"
       - "&e&lPoints: &f%Points%"
       - "  "
+    ToggleOn: "&aSidebar scoreboard enabled."
+    ToggleOff: "&eSidebar scoreboard hidden."
+    ToggleUsage: "&cUsage: /mobscoreboard [on|off]"
