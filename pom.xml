@@ -15,7 +15,7 @@
         <maven.compiler.plugin.version>3.12.1</maven.compiler.plugin.version>
         <paper.api.version>1.21.8-R0.1-SNAPSHOT</paper.api.version>
         <lombok.version>1.18.38</lombok.version>
-        <decentholograms.version>2.9.1</decentholograms.version>
+        <decentholograms.version>2.8.6</decentholograms.version>
     </properties>
 
     <build>
