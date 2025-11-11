@@ -5,23 +5,24 @@ import org.modularsoft.MobHunt.commands.mobclear;
 import org.modularsoft.MobHunt.commands.mobhelp;
 import org.modularsoft.MobHunt.commands.mobstats;
 import org.modularsoft.MobHunt.commands.mobleaderboard;
+import org.modularsoft.MobHunt.commands.mobscoreboard;
 import org.modularsoft.MobHunt.events.OnHunterJoin;
 import org.modularsoft.MobHunt.events.OnMobKill;
-import com.mysql.cj.jdbc.MysqlDataSource;
+import org.modularsoft.MobHunt.storage.PlayerDataStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Objects;
 
 public class MobHuntMain extends JavaPlugin {
     private PluginConfig config;
-    private Connection connection;
+    private PlayerDataStorage playerDataStorage;
     private ConsoleCommandSender console;
+    private HologramController hologramController;
+    private ScoreboardController scoreboardController;
 
     public PluginConfig config() {
         return config;
@@ -34,18 +35,16 @@ public class MobHuntMain extends JavaPlugin {
         config = new PluginConfig(this);
         console = getServer().getConsoleSender();
 
-        // Check if DecentHolograms enabled.
-        if (!getServer().getPluginManager().isPluginEnabled("DecentHolograms")) {
-            getLogger().severe("DecentHolograms plugin is not enabled, hologram features will not work.");
-            return;
-        }
+        playerDataStorage = new PlayerDataStorage(this);
 
         HunterController hunterController = new HunterController(this);
-        ScoreboardController scoreboardController = new ScoreboardController(this);
-        HologramController hologramController = new HologramController(this, hunterController);
-
-        // Connect to the database
-        establishConnection();
+        scoreboardController = new ScoreboardController(this);
+        boolean hologramsAvailable = getServer().getPluginManager().isPluginEnabled("DecentHolograms");
+        if (!hologramsAvailable) {
+            getLogger().warning("DecentHolograms plugin is not enabled, hologram features will be skipped.");
+        } else {
+            hologramController = new HologramController(this, hunterController);
+        }
 
         // Plugin Event Register
         PluginManager pluginManager = getServer().getPluginManager();
@@ -57,6 +56,7 @@ public class MobHuntMain extends JavaPlugin {
         Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
         Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
         Objects.requireNonNull(getCommand("mobhelp")).setExecutor(new mobhelp(hunterController));
+        Objects.requireNonNull(getCommand("mobscoreboard")).setExecutor(new mobscoreboard(this, scoreboardController));
 
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");
@@ -65,46 +65,26 @@ public class MobHuntMain extends JavaPlugin {
             console.sendMessage(ChatColor.GREEN + "Created By: " + getDescription().getAuthors());
         }
 
-        // Create hologram if it doesn't exist.
-        hologramController.reloadHunterLeaderboard();
+        if (hologramController != null) {
+            // Create hologram if it doesn't exist.
+            hologramController.reloadHunterLeaderboard();
 
-        BukkitScheduler scheduler = getServer().getScheduler();
-        scheduler.scheduleSyncRepeatingTask(this, hologramController::reloadHunterLeaderboard, 0L, 20L * 10);
+            BukkitScheduler scheduler = getServer().getScheduler();
+            scheduler.scheduleSyncRepeatingTask(this, hologramController::reloadHunterLeaderboard, 0L, 20L * 10);
+        }
     }
 
     @Override
     public void onDisable() {
         if (config.isFeatureOnDisableConsoleMessageEnabled())
             console.sendMessage(ChatColor.RED + getDescription().getName() + " is now disabled.");
+
+        if (playerDataStorage != null)
+            playerDataStorage.save();
     }
 
-    public void establishConnection() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            MysqlDataSource dataSource = new MysqlDataSource();
-            dataSource.setServerName(config.getDatabaseHost());
-            dataSource.setPort(config.getDatabasePort());
-            dataSource.setDatabaseName(config.getDatabaseName());
-            dataSource.setUser(config.getDatabaseUsername());
-            dataSource.setPassword(config.getDatabasePassword());
-            connection = dataSource.getConnection();
-        } catch (SQLException | ClassNotFoundException e) {
-            getLogger().info(config.getLangDatabaseConnectionError());
-            e.printStackTrace();
-        }
-    }
-
-    public Connection getConnection() {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                getLogger().info(config.getLangDatabaseConnectionError());
-                e.printStackTrace();
-            }
-        }
-        establishConnection();
-        return connection;
+    public PlayerDataStorage getPlayerDataStorage() {
+        return playerDataStorage;
     }
 
     /**

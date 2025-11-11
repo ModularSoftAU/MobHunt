@@ -3,7 +3,7 @@ name: MobHunt
 description: Hunt as many mobs overall, or of a unique mob type.
 version: ${project.version}
 authors: [ModularSoft]
-api-version: 1.20
+api-version: 1.21
 softdepend:
   - DecentHolograms
 
@@ -22,3 +22,7 @@ commands:
     description: Helps the player know how to play Mob Hunt.
     usage: /mobhelp
     aliases: [howtoplay]
+  mobscoreboard:
+    description: Toggle the Mob Hunt sidebar scoreboard on or off.
+    usage: /mobscoreboard [on|off]
+    aliases: [mhsb, mobsb]
