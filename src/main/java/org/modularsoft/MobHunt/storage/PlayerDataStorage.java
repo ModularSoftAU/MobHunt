@@ -13,6 +13,7 @@ import java.util.logging.Level;
 public class PlayerDataStorage {
     private static final String PLAYERS_KEY = "players";
     private static final String SIDEBAR_KEY = "scoreboardEnabled";
+    private static final String POINT_NOTIFICATIONS_KEY = "pointNotificationsEnabled";
 
     private final MobHuntMain plugin;
     private final File dataFile;
@@ -97,6 +98,11 @@ public class PlayerDataStorage {
             dirty = true;
         }
 
+        if (!section.contains(POINT_NOTIFICATIONS_KEY)) {
+            section.set(POINT_NOTIFICATIONS_KEY, true);
+            dirty = true;
+        }
+
         if (!Objects.equals(section.getString("username"), username)) {
             section.set("username", username);
             dirty = true;
@@ -142,6 +148,28 @@ public class PlayerDataStorage {
 
         section.set(SIDEBAR_KEY, enabled);
         save();
+    }
+
+    public boolean isPointNotificationsEnabled(UUID uuid) {
+        ConfigurationSection section = getPlayerSection(uuid, false);
+        if (section == null)
+            return true;
+        return section.getBoolean(POINT_NOTIFICATIONS_KEY, true);
+    }
+
+    public void setPointNotificationsEnabled(UUID uuid, boolean enabled) {
+        ConfigurationSection section = getPlayerSection(uuid, true);
+        if (section == null)
+            return;
+
+        section.set(POINT_NOTIFICATIONS_KEY, enabled);
+        save();
+    }
+
+    public boolean togglePointNotifications(UUID uuid) {
+        boolean enabled = !isPointNotificationsEnabled(uuid);
+        setPointNotificationsEnabled(uuid, enabled);
+        return enabled;
     }
 
     public int getMobKillCount(UUID uuid, String mobType) {

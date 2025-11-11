@@ -1,6 +1,7 @@
 package org.modularsoft.MobHunt;
 
 import org.bukkit.scheduler.BukkitScheduler;
+import org.modularsoft.MobHunt.commands.mh;
 import org.modularsoft.MobHunt.commands.mobclear;
 import org.modularsoft.MobHunt.commands.mobhelp;
 import org.modularsoft.MobHunt.commands.mobstats;
@@ -57,6 +58,7 @@ public class MobHuntMain extends JavaPlugin {
         Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
         Objects.requireNonNull(getCommand("mobhelp")).setExecutor(new mobhelp(hunterController));
         Objects.requireNonNull(getCommand("mobscoreboard")).setExecutor(new mobscoreboard(this, scoreboardController));
+        Objects.requireNonNull(getCommand("mh")).setExecutor(new mh(this, scoreboardController));
 
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");

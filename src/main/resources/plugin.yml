@@ -26,3 +26,7 @@ commands:
     description: Toggle the Mob Hunt sidebar scoreboard on or off.
     usage: /mobscoreboard [on|off]
     aliases: [mhsb, mobsb]
+  mh:
+    description: Toggle Mob Hunt features such as the sidebar and point notifications.
+    usage: /mh toggle <scoreboard|notifications> [on|off]
+    aliases: [mhtoggle]
