@@ -8,25 +8,11 @@ softdepend:
   - DecentHolograms
 
 commands:
-  mobstats:
-    description: Shows a breakdown of the mobs you killed, or another player if you are an Admin.
-    usage: /mobstats [player]
-  mobclear:
-    description: Clear all mobs from yourself or another player.
-    usage: /mobclear [player]
-  mobleaderboard:
-    description: Show the Top 5 Mob Hunters overall or of a specific mob.
-    usage: /mobleaderboard [mob]
-    aliases: [lb, leaderboard]
-  mobhelp:
-    description: Helps the player know how to play Mob Hunt.
-    usage: /mobhelp
-    aliases: [howtoplay]
-  mobscoreboard:
-    description: Toggle the Mob Hunt sidebar scoreboard on or off.
-    usage: /mobscoreboard [on|off]
-    aliases: [mhsb, mobsb]
   mh:
-    description: Toggle Mob Hunt features such as the sidebar and point notifications.
-    usage: /mh toggle <scoreboard|notifications> [on|off]
-    aliases: [mhtoggle]
+    description: Player-facing Mob Hunt commands such as help, stats, leaderboard, and toggles.
+    usage: /mh <help|leaderboard|stats|scoreboard|toggle>
+    aliases: [mobleaderboard, mobhelp, mobscoreboard, mobstats, mhtoggle, lb, leaderboard, mhsb, mobsb, howtoplay]
+  mhadmin:
+    description: Administrative Mob Hunt commands for clearing data or inspecting others.
+    usage: /mhadmin <clear|stats> [player]
+    aliases: [mobclear, mobadmin]

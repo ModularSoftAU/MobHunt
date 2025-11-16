@@ -154,7 +154,7 @@ Lang:
       - "  "
     ToggleOn: "&aSidebar scoreboard enabled."
     ToggleOff: "&eSidebar scoreboard hidden."
-    ToggleUsage: "&cUsage: /mobscoreboard [on|off]"
+    ToggleUsage: "&cUsage: /mh scoreboard [on|off]"
   Toggle:
     Usage: "&cUsage: /mh toggle <scoreboard|notifications> [on|off]"
     UnknownTarget: "&cUnknown toggle target. Use scoreboard or notifications."

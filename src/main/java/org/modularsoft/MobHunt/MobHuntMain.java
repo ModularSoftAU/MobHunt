@@ -2,11 +2,7 @@ package org.modularsoft.MobHunt;
 
 import org.bukkit.scheduler.BukkitScheduler;
 import org.modularsoft.MobHunt.commands.mh;
-import org.modularsoft.MobHunt.commands.mobclear;
-import org.modularsoft.MobHunt.commands.mobhelp;
-import org.modularsoft.MobHunt.commands.mobstats;
-import org.modularsoft.MobHunt.commands.mobleaderboard;
-import org.modularsoft.MobHunt.commands.mobscoreboard;
+import org.modularsoft.MobHunt.commands.mhadmin;
 import org.modularsoft.MobHunt.events.OnHunterJoin;
 import org.modularsoft.MobHunt.events.OnMobKill;
 import org.modularsoft.MobHunt.storage.PlayerDataStorage;
@@ -53,12 +49,8 @@ public class MobHuntMain extends JavaPlugin {
         pluginManager.registerEvents(new OnMobKill(this, hunterController, scoreboardController), this);
 
         // Command Registry
-        Objects.requireNonNull(getCommand("mobstats")).setExecutor(new mobstats(this, hunterController));
-        Objects.requireNonNull(getCommand("mobclear")).setExecutor(new mobclear(this, hunterController, scoreboardController));
-        Objects.requireNonNull(getCommand("mobleaderboard")).setExecutor(new mobleaderboard(this, hunterController));
-        Objects.requireNonNull(getCommand("mobhelp")).setExecutor(new mobhelp(hunterController));
-        Objects.requireNonNull(getCommand("mobscoreboard")).setExecutor(new mobscoreboard(this, scoreboardController));
-        Objects.requireNonNull(getCommand("mh")).setExecutor(new mh(this, scoreboardController));
+        Objects.requireNonNull(getCommand("mh")).setExecutor(new mh(this, hunterController, scoreboardController));
+        Objects.requireNonNull(getCommand("mhadmin")).setExecutor(new mhadmin(this, hunterController, scoreboardController));
 
         if (config.isFeatureOnEnableConsoleMessageEnabled()) {
             console.sendMessage(ChatColor.GREEN + getDescription().getName() + " is now enabled.");

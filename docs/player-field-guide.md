@@ -4,8 +4,8 @@ The Mob Hunt plugin turns mob-slaying into an ongoing competition. This guide he
 
 ## Quick Start Checklist
 
-1. **Read the tutorial** – Type `/mobhelp` in-game to see the overview written by your server admins.
-2. **Check your stats** – Use `/mobstats` to view your total points, kill counts per mob, and your personal rank.
+1. **Read the tutorial** – Type `/mh help` in-game to see the overview written by your server admins.
+2. **Check your stats** – Use `/mh stats` to view your total points, kill counts per mob, and your personal rank.
 3. **Learn the point values** – Open `plugins/MobHunt/config.yml` or ask staff which mobs are worth the most points.
 4. **Grab supplies** – Stock up on weapons, armor, and food before heading into the world.
 5. **Head to a hunting ground** – Explore different biomes and dimensions to find high-value mobs.
@@ -41,9 +41,9 @@ Whenever you hit a milestone, the plugin plays optional sounds and titles to kee
 
 You can review the top hunters anytime:
 
-* `/mobleaderboard` – View the overall leaders.
-* `/mobleaderboard <mob>` – See the best hunter for a specific mob.
-* **Scoreboards** – Many servers enable a sidebar scoreboard so you can track your rank in real time; hide or show it with `/mobscoreboard` if you need more screen space.
+* `/mh leaderboard` – View the overall leaders.
+* `/mh leaderboard <mob>` – See the best hunter for a specific mob.
+* **Scoreboards** – Many servers enable a sidebar scoreboard so you can track your rank in real time; hide or show it with `/mh scoreboard` if you need more screen space.
 * **Holograms** – If DecentHolograms is installed, a live hologram can display the top 10 hunters at spawn or in a hall of fame.
 
 ### Running Events
@@ -80,19 +80,19 @@ A: No. Points only ever increase as you slay mobs.
 A: It depends on your server’s rules. The kill cap prevents infinite farming, but always follow local guidelines.
 
 **Q: How do I know the kill cap for a mob?**  
-A: Ask staff or view the server’s `config.yml`. Some servers include the values in `/mobhelp`.
+A: Ask staff or view the server’s `config.yml`. Some servers include the values in `/mh help`.
 
 **Q: My stats seem stuck—what do I do?**
-A: Contact staff to make sure the plugin can write to `playerdata.yml`. Re-logging or running `/mobscoreboard on` usually refreshes your sidebar.
+A: Contact staff to make sure the plugin can write to `playerdata.yml`. Re-logging or running `/mh scoreboard on` usually refreshes your sidebar.
 
 ## Shareable Quick Tips
 
 Print or copy these lines into your server’s announcement channels:
 
-* “Use `/mobstats` after every hunt to see where you’re close to a new milestone.”
+* “Use `/mh stats` after every hunt to see where you’re close to a new milestone.”
 * “Rotate between overworld, Nether, and End mobs to maximize points.”
-* “Hit `/mobleaderboard blaze` to see who rules the Nether this week.”
-* “Need breathing room? `/mobscoreboard off` hides the sidebar until you want it back.”
+* “Hit `/mh leaderboard blaze` to see who rules the Nether this week.”
+* “Need breathing room? `/mh scoreboard off` hides the sidebar until you want it back.”
 * “Event night is coming—archive your best hunts and get ready for a fresh climb!”
 
 Happy hunting!
