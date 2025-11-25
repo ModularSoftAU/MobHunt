@@ -25,7 +25,7 @@ Mob Hunt is a Paper plugin that rewards players for hunting across the overworld
 * **Configurable scoring** – Assign custom point values for each mob type and define the kill cap that controls diminishing returns.
 * **Milestones and announcements** – Reward hunters with customizable milestone notifications and sounds.
 * **Leaderboards everywhere** – Display top hunters through chat commands, scoreboards, or optional DecentHolograms integration.
-* **Player-friendly tutorials** – `/mobhelp` and the new [Player Field Guide](#player-field-guide) walk newcomers through the rules and best practices.
+* **Player-friendly tutorials** – `/mh help` and the new [Player Field Guide](#player-field-guide) walk newcomers through the rules and best practices.
 
 ## Requirements
 
@@ -82,10 +82,10 @@ players:
 
 ## Getting Started In-Game
 
-1. **Join the hunt** – Use `/mobhelp` after you log in to read the tutorial text configured by your server admins.
-2. **Check your stats** – Run `/mobstats` to see which mobs you have hunted and how many points you have.
+1. **Join the hunt** – Use `/mh help` after you log in to read the tutorial text configured by your server admins.
+2. **Check your stats** – Run `/mh stats` to see which mobs you have hunted and how many points you have.
 3. **Pick your targets** – Focus on the mobs worth the most in your server’s `config.yml`, but be mindful of diminishing returns near the kill cap.
-4. **Watch the scoreboard** – The sidebar updates live as you earn points; use `/mobscoreboard` if you prefer to hide or reshow it.
+4. **Watch the scoreboard** – The sidebar updates live as you earn points; use `/mh scoreboard` if you prefer to hide or reshow it.
 5. **Celebrate milestones** – Keep an ear out for sounds or broadcasts letting everyone know you reached a minor or major milestone.
 
 ## How the Scoring System Works
@@ -103,26 +103,28 @@ players:
 
 ## Leaderboards & Competitive Play
 
-* **Chat leaderboards** – `/mobleaderboard` lists the top hunters overall. Add a mob name to focus on the best creeper hunter, blaze slayer, and more.
-* **Scoreboards** – When enabled, the sidebar updates every refresh tick to highlight the leaders and your personal rank. Players can opt out with `/mobscoreboard off` and opt back in later.
+* **Chat leaderboards** – `/mh leaderboard` lists the top hunters overall. Add a mob name to focus on the best creeper hunter, blaze slayer, and more.
+* **Scoreboards** – When enabled, the sidebar updates every refresh tick to highlight the leaders and your personal rank. Players can opt out with `/mh scoreboard off` and opt back in later.
 * **Holograms** – Pair Mob Hunt with [DecentHolograms](https://www.spigotmc.org/resources/decent-holograms-1-8-1-20-4.96927/) to drop a 3D leaderboard into your spawn area.
 
 ## Commands
 
 | Command | Description | Permission |
 |---------|-------------|------------|
-| `/mobstats [player]` | View your own mob kill breakdown or specify a player (admin only) to inspect their stats. | `mobhunt.admin` for viewing others |
-| `/mobclear [player]` | Reset your own Mob Hunt progress, or specify another player to reset them (admin only). | `mobhunt.admin` |
-| `/mobleaderboard [mob]` | Display the overall leaderboard or the top hunters for a specific mob type. | *None* |
-| `/mobhelp` | Show the Mob Hunt tutorial text to explain the rules and scoring. | *None* |
-| `/mobscoreboard [on\|off]` | Toggle the sidebar scoreboard for your own client. Run without arguments to swap states. | *None* |
+| `/mh help` | Show the Mob Hunt tutorial text to explain the rules and scoring. | *None* |
+| `/mh stats` | View your own mob kill breakdown. | *None* |
+| `/mh leaderboard [mob]` | Display the overall leaderboard or the top hunters for a specific mob type. | *None* |
+| `/mh scoreboard [on\|off]` | Toggle the sidebar scoreboard for your own client. Run without arguments to swap states. | *None* |
+| `/mh toggle notifications [on\|off]` | Enable, disable, or toggle point notifications in chat. | *None* |
+| `/mhadmin stats <player>` | Inspect another player's stats. | `mobhunt.admin` |
+| `/mhadmin clear [player]` | Reset your own Mob Hunt progress, or specify another player to reset them. | `mobhunt.admin` |
 
 ## Tips & Configuration Highlights
 
 * **Scoreboards** – Customize the sidebar in `Lang.Scoreboard` to match your server branding and messaging when players toggle it on or off.
 * **Holograms** – Configure `Hologram.LocationWorld/X/Y/Z` if you use DecentHolograms to show the live leaderboard. If the plugin is missing, Mob Hunt will continue running and simply skip hologram updates.
 * **Storage error message** – `Lang.Storage.Error` is sent if the plugin can’t write to `playerdata.yml`; make sure the plugin folder is writable.
-* **Onboarding tip** – Pre-fill `Lang.Help` with a quick explanation of the point values on your server so `/mobhelp` answers the most common questions.
+* **Onboarding tip** – Pre-fill `Lang.Help` with a quick explanation of the point values on your server so `/mh help` answers the most common questions.
 * **Historical archives** – Keep a copy of `playerdata.yml` whenever you want to preserve a snapshot of results before resetting the hunt or running a special event.
 
 ## Migrating from Legacy MySQL Builds

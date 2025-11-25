@@ -59,6 +59,10 @@ public class PluginConfig {
     @Getter private String langScoreboardToggleOn;
     @Getter private String langScoreboardToggleOff;
     @Getter private String langScoreboardToggleUsage;
+    @Getter private String langToggleUsage;
+    @Getter private String langToggleUnknownTarget;
+    @Getter private String langNotificationsToggleOn;
+    @Getter private String langNotificationsToggleOff;
 
     public PluginConfig(MobHuntMain plugin) {
         this.plugin = plugin;
@@ -131,6 +135,10 @@ public class PluginConfig {
         langScoreboardToggleOn =       ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.ToggleOn")));
         langScoreboardToggleOff =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.ToggleOff")));
         langScoreboardToggleUsage =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Scoreboard.ToggleUsage")));
+        langToggleUsage =              ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Toggle.Usage")));
+        langToggleUnknownTarget =      ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Toggle.UnknownTarget")));
+        langNotificationsToggleOn =    ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Notifications.ToggleOn")));
+        langNotificationsToggleOff =   ChatColor.translateAlternateColorCodes('&', Objects.requireNonNull(config.getString("Lang.Notifications.ToggleOff")));
     }
 
     public Integer getMobPoints(String mobType) {

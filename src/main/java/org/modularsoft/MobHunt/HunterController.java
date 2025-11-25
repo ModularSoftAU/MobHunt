@@ -24,6 +24,8 @@ public class HunterController {
      * @param points The number of points awarded for killing the mob.
      */
     public void mobKilledResponse(Player player, String mobType, int points) {
+        if (!plugin.getPlayerDataStorage().isPointNotificationsEnabled(player.getUniqueId()))
+            return;
         player.sendMessage(plugin.config().getLangMobKilled()
                 .replace("%MobType%", mobType)
                 .replace("%Points%", "" + points)
