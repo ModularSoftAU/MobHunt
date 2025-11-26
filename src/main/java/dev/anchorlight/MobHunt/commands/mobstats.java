@@ -1,8 +1,8 @@
-package org.modularsoft.MobHunt.commands;
+package dev.anchorlight.MobHunt.commands;
 
-import org.modularsoft.MobHunt.MobHuntMain;
-import org.modularsoft.MobHunt.HunterController;
-import org.modularsoft.MobHunt.MobHuntQuery;
+import dev.anchorlight.MobHunt.MobHuntMain;
+import dev.anchorlight.MobHunt.HunterController;
+import dev.anchorlight.MobHunt.MobHuntQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;

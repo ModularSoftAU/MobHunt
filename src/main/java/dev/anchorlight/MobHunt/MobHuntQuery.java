@@ -1,4 +1,4 @@
-package org.modularsoft.MobHunt;
+package dev.anchorlight.MobHunt;
 
 import lombok.Getter;
 import org.bukkit.command.CommandSender;

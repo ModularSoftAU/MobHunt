@@ -1,15 +1,15 @@
-package org.modularsoft.MobHunt.events;
+package dev.anchorlight.MobHunt.events;
 
-import org.modularsoft.MobHunt.helpers.CollectionMilestone;
+import dev.anchorlight.MobHunt.helpers.CollectionMilestone;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.modularsoft.MobHunt.HunterController;
-import org.modularsoft.MobHunt.MobHuntMain;
-import org.modularsoft.MobHunt.MobHuntQuery;
-import org.modularsoft.MobHunt.ScoreboardController;
+import dev.anchorlight.MobHunt.HunterController;
+import dev.anchorlight.MobHunt.MobHuntMain;
+import dev.anchorlight.MobHunt.MobHuntQuery;
+import dev.anchorlight.MobHunt.ScoreboardController;
 
 import java.util.List;
 

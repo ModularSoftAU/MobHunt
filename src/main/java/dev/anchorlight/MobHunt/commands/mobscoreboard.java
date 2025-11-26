@@ -1,12 +1,12 @@
-package org.modularsoft.MobHunt.commands;
+package dev.anchorlight.MobHunt.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.modularsoft.MobHunt.MobHuntMain;
-import org.modularsoft.MobHunt.ScoreboardController;
+import dev.anchorlight.MobHunt.MobHuntMain;
+import dev.anchorlight.MobHunt.ScoreboardController;
 
 import java.util.Locale;
 

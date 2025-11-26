@@ -1,11 +1,11 @@
-package org.modularsoft.MobHunt;
+package dev.anchorlight.MobHunt;
 
 import org.bukkit.scheduler.BukkitScheduler;
-import org.modularsoft.MobHunt.commands.mh;
-import org.modularsoft.MobHunt.commands.mhadmin;
-import org.modularsoft.MobHunt.events.OnHunterJoin;
-import org.modularsoft.MobHunt.events.OnMobKill;
-import org.modularsoft.MobHunt.storage.PlayerDataStorage;
+import dev.anchorlight.MobHunt.commands.mh;
+import dev.anchorlight.MobHunt.commands.mhadmin;
+import dev.anchorlight.MobHunt.events.OnHunterJoin;
+import dev.anchorlight.MobHunt.events.OnMobKill;
+import dev.anchorlight.MobHunt.storage.PlayerDataStorage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;

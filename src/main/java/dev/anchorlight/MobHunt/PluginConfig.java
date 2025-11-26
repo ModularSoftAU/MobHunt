@@ -1,6 +1,6 @@
-package org.modularsoft.MobHunt;
+package dev.anchorlight.MobHunt;
 
-import org.modularsoft.MobHunt.helpers.CollectionMilestone;
+import dev.anchorlight.MobHunt.helpers.CollectionMilestone;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;

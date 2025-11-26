@@ -1,4 +1,4 @@
-package org.modularsoft.MobHunt;
+package dev.anchorlight.MobHunt;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
