@@ -1,6 +1,6 @@
-package org.modularsoft.MobHunt.commands;
+package dev.anchorlight.MobHunt.commands;
 
-import org.modularsoft.MobHunt.HunterController;
+import dev.anchorlight.MobHunt.HunterController;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

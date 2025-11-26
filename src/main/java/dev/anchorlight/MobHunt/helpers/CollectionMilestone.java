@@ -1,6 +1,6 @@
-package org.modularsoft.MobHunt.helpers;
+package dev.anchorlight.MobHunt.helpers;
 
-import org.modularsoft.MobHunt.HunterController;
+import dev.anchorlight.MobHunt.HunterController;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

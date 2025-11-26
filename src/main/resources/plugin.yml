@@ -1,8 +1,8 @@
-main: org.modularsoft.MobHunt.MobHuntMain
+main: dev.anchorlight.MobHunt.MobHuntMain
 name: MobHunt
 description: Hunt as many mobs overall, or of a unique mob type.
 version: ${project.version}
-authors: [ModularSoft]
+authors: [Anchorlight]
 api-version: 1.21
 softdepend:
   - DecentHolograms

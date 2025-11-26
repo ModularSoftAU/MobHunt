@@ -1,4 +1,4 @@
-package org.modularsoft.MobHunt.helpers;
+package dev.anchorlight.MobHunt.helpers;
 
 /**
  * From https://www.spigotmc.org/threads/free-code-sending-perfectly-centered-chat-message.95872/

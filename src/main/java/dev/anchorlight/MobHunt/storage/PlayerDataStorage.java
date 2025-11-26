@@ -1,9 +1,9 @@
-package org.modularsoft.MobHunt.storage;
+package dev.anchorlight.MobHunt.storage;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.modularsoft.MobHunt.MobHuntMain;
-import org.modularsoft.MobHunt.MobHuntQuery;
+import dev.anchorlight.MobHunt.MobHuntMain;
+import dev.anchorlight.MobHunt.MobHuntQuery;
 
 import java.io.File;
 import java.io.IOException;

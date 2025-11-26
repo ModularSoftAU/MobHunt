@@ -1,4 +1,4 @@
-package org.modularsoft.MobHunt;
+package dev.anchorlight.MobHunt;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

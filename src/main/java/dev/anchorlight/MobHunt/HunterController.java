@@ -1,6 +1,6 @@
-package org.modularsoft.MobHunt;
+package dev.anchorlight.MobHunt;
 
-import org.modularsoft.MobHunt.helpers.DefaultFontInfo;
+import dev.anchorlight.MobHunt.helpers.DefaultFontInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;

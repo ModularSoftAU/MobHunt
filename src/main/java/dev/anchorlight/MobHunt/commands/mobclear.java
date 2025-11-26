@@ -1,7 +1,7 @@
-package org.modularsoft.MobHunt.commands;
+package dev.anchorlight.MobHunt.commands;
 
-import org.modularsoft.MobHunt.MobHuntMain;
-import org.modularsoft.MobHunt.ScoreboardController;
+import dev.anchorlight.MobHunt.MobHuntMain;
+import dev.anchorlight.MobHunt.ScoreboardController;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -9,8 +9,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.modularsoft.MobHunt.HunterController;
-import org.modularsoft.MobHunt.MobHuntQuery;
+import dev.anchorlight.MobHunt.HunterController;
+import dev.anchorlight.MobHunt.MobHuntQuery;
 
 public class mobclear implements CommandExecutor {
     private final MobHuntMain plugin;
